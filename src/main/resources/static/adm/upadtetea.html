@@ -8,12 +8,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>教师添加</title>
+    <title>教师修改</title>
     <!-- Bootstrap core CSS -->
-    <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="asserts/css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+    <link href="../css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
     <style type="text/css">
         /* Chart.js */
 
@@ -53,12 +53,12 @@
         <div th:replace="commons/admbar::#sidebar(activeUri='tea')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <form th:action="@{/adm/teaAdd}" method="post">
-                <!--提示框 -->
+            <form th:action="@{/adm/tea}" method="post">
+
                 <div class="alert alert-danger" role="alert" th:if="${errors!=null}">
                     <div th:text="${error.msg}" th:each="error:${errors}"></div>
                 </div>
-
+                <input type="hidden" name="_method" value="put" />
                 <div class="form-group">
                     <label>工号</label>
                     <input name="teaId" type="text" class="form-control" placeholder="请输入工号" th:value="${tea!=null}?${tea.teaId}">
@@ -67,6 +67,12 @@
                     <label>姓名</label>
                     <input name="teaName" type="text" class="form-control" placeholder="请输入姓名" th:value="${tea!=null}?${tea.teaName}">
                 </div>
+
+                <div class="form-group">
+                    <label>密码</label>
+                    <input name="teaPass" type="text" class="form-control" placeholder="请输入密码" th:value="${tea!=null}?${tea.teaPass}">
+                </div>
+
                 <div class="form-group">
                     <label>性别</label><br/>
                     <div class="form-check form-check-inline">
@@ -78,11 +84,12 @@
                         <label class="form-check-label">女</label>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label>电话</label>
                     <input name="teaTele" type="text" class="form-control" placeholder="请输入电话号码" th:value="${tea!=null}?${tea.teaTele}">
                 </div>
-                <button type="submit" class="btn btn-primary" >添加</button>
+                <button type="submit" class="btn btn-primary" >修改</button>
             </form>
         </main>
     </div>
@@ -91,12 +98,12 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
-<script type="text/javascript" src="asserts/js/popper.min.js" th:src="@{/webjars/popper.js/1.11.1/dist/popper.js}"></script>
-<script type="text/javascript" src="asserts/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
+<script type="text/javascript" src="../js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+<script type="text/javascript" src="../js/popper.min.js" th:src="@{/webjars/popper.js/1.11.1/dist/popper.js}"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
 
 <!-- Icons -->
-<script type="text/javascript" src="asserts/js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
+<script type="text/javascript" src="../js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
 <script>
     feather.replace();
 </script>

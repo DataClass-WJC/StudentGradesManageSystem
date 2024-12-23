@@ -8,12 +8,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>学生修改</title>
+    <title>教师添加</title>
     <!-- Bootstrap core CSS -->
-    <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="asserts/css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+    <link href="../css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
     <style type="text/css">
         /* Chart.js */
 
@@ -50,55 +50,39 @@
 <div class="container-fluid">
     <div class="row">
         <!--引入侧边栏-->
-        <div th:replace="commons/admbar::#sidebar(activeUri='stu')"></div>
+        <div th:replace="commons/admbar::#sidebar(activeUri='tea')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <form th:action="@{/adm/stubyclass}" method="post">
-
+            <form th:action="@{/adm/teaAdd}" method="post">
+                <!--提示框 -->
                 <div class="alert alert-danger" role="alert" th:if="${errors!=null}">
                     <div th:text="${error.msg}" th:each="error:${errors}"></div>
                 </div>
 
-                <input type="hidden" name="_method" value="put" />
-                <input type="hidden" name="ininclass" th:value="${ininclass}" />
-
                 <div class="form-group">
-                    <label>学号</label>
-                    <input name="stuId" type="text" class="form-control" placeholder="请输入学号" th:value="${stu!=null}?${stu.stuId}">
+                    <label>工号</label>
+                    <input name="teaId" type="text" class="form-control" placeholder="请输入工号" th:value="${tea!=null}?${tea.teaId}">
                 </div>
                 <div class="form-group">
                     <label>姓名</label>
-                    <input name="stuName" type="text" class="form-control" placeholder="请输入姓名" th:value="${stu!=null}?${stu.stuName}">
-                </div>
-
-                <div class="form-group">
-                    <label>密码</label>
-                    <input name="stuPass" type="text" class="form-control" placeholder="请输入密码" th:value="${stu!=null}?${stu.stuPass}">
-                </div>
-
-                <div class="form-group">
-                    <label>班级</label>
-                    <select class=" form-control" name="stuClass">
-                        <option  th:selected="${stu!=null}?${class.className eq stu.getStuClass()}"  th:each="class:${classes}" th:value="${class.className}" th:text="${class.className}">1</option>
-                    </select>
+                    <input name="teaName" type="text" class="form-control" placeholder="请输入姓名" th:value="${tea!=null}?${tea.teaName}">
                 </div>
                 <div class="form-group">
                     <label>性别</label><br/>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="stuSex" value="1" th:checked="${stu!=null}?${stu.stuSex eq '1'}">
+                        <input class="form-check-input" type="radio" name="teaSex" value="1" th:checked="${tea!=null}?${tea.teaSex eq '1'}">
                         <label class="form-check-label">男</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="stuSex" value="0" th:checked="${stu!=null}?${stu.stuSex eq '0'}">
+                        <input class="form-check-input" type="radio" name="teaSex" value="0" th:checked="${tea!=null}?${tea.teaSex eq '0'}">
                         <label class="form-check-label">女</label>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>电话</label>
-                    <input name="stuTele" type="text" class="form-control" placeholder="请输入电话号码" th:value="${stu!=null}?${stu.stuTele}">
+                    <input name="teaTele" type="text" class="form-control" placeholder="请输入电话号码" th:value="${tea!=null}?${tea.teaTele}">
                 </div>
-                <button type="submit" class="btn btn-primary" >修改</button>
+                <button type="submit" class="btn btn-primary" >添加</button>
             </form>
         </main>
     </div>
@@ -107,12 +91,12 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
-<script type="text/javascript" src="asserts/js/popper.min.js" th:src="@{/webjars/popper.js/1.11.1/dist/popper.js}"></script>
-<script type="text/javascript" src="asserts/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
+<script type="text/javascript" src="../js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+<script type="text/javascript" src="../js/popper.min.js" th:src="@{/webjars/popper.js/1.11.1/dist/popper.js}"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
 
 <!-- Icons -->
-<script type="text/javascript" src="asserts/js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
+<script type="text/javascript" src="../js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
 <script>
     feather.replace();
 </script>

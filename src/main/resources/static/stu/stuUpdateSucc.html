@@ -10,10 +10,10 @@
 
     <title>学生成绩信息管理系统</title>
     <!-- Bootstrap core CSS -->
-    <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="asserts/css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+    <link href="../css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
     <style type="text/css">
         /* Chart.js */
 
@@ -50,14 +50,11 @@
 <div class="container-fluid">
     <div class="row">
         <!--引入侧边栏-->
-        <div th:replace="commons/stubar::#sidebar(activeUri='index')"></div>
+        <div th:replace="commons/stubar::#sidebar(activeUri='msg')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <div class="jumbotron jumbotron-fluid">
-                <div class="container">
-                    <h1 class="display-4">学生端首页</h1>
-                    <p class="lead">请点击侧边栏进行操作</p>
-                </div>
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">修改成功!</h4>
             </div>
         </main>
 

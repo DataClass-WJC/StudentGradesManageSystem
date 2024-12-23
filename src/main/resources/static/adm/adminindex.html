@@ -45,51 +45,23 @@
 <body>
 <!--引入抽取的topbar-->
 <!--模板名：会使用thymeleaf的前后缀配置规则进行解析-->
-<div th:replace="commons/stubar::topbar"></div>
+<div th:replace="commons/admbar::topbar"></div>
+
 <div class="container-fluid">
     <div class="row">
         <!--引入侧边栏-->
-        <div th:replace="commons/stubar::#sidebar(activeUri='result')"></div>
+        <div th:replace="commons/admbar::#sidebar(activeUri='index')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-
-            <div class="table-responsive">
-                <table class="table table-striped table-sm">
-                    <thead>
-                    <tr >
-                        <th th:text="${list2}" th:each="list2:${list1}">课程名</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>20181685310372</td>
-                        <td>358</td>
-                        <td th:each="blogId,blogIdStat: ${list}">
-                            <span th:text="${blogIdStat.current.key}"></span>
-                            <span>:</span>
-                            <span th:text="${blogIdStat.current.value}"></span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-4">管理员首页</h1>
+                    <p class="lead">请点击侧边栏进行管理</p>
+                </div>
             </div>
-
         </main>
+
     </div>
 </div>
-
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script type="text/javascript" src="../js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
-<script type="text/javascript" src="../js/popper.min.js" th:src="@{/webjars/popper.js/1.11.1/dist/popper.js}"></script>
-<script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
-
-<!-- Icons -->
-<script type="text/javascript" src="../js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
-<script>
-    feather.replace()
-</script>
 </body>
 </html>

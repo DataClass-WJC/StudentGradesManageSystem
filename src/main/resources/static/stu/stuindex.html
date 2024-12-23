@@ -10,10 +10,10 @@
 
     <title>学生成绩信息管理系统</title>
     <!-- Bootstrap core CSS -->
-    <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="asserts/css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+    <link href="../css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
     <style type="text/css">
         /* Chart.js */
 
@@ -45,18 +45,18 @@
 <body>
 <!--引入抽取的topbar-->
 <!--模板名：会使用thymeleaf的前后缀配置规则进行解析-->
-<div th:replace="commons/admbar::topbar"></div>
+<div th:replace="commons/stubar::topbar"></div>
 
 <div class="container-fluid">
     <div class="row">
         <!--引入侧边栏-->
-        <div th:replace="commons/admbar::#sidebar(activeUri='index')"></div>
+        <div th:replace="commons/stubar::#sidebar(activeUri='index')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
             <div class="jumbotron jumbotron-fluid">
                 <div class="container">
-                    <h1 class="display-4">管理员首页</h1>
-                    <p class="lead">请点击侧边栏进行管理</p>
+                    <h1 class="display-4">学生端首页</h1>
+                    <p class="lead">请点击侧边栏进行操作</p>
                 </div>
             </div>
         </main>
