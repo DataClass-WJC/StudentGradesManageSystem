@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>学生修改</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../css/dashboard.css" rel="stylesheet">
+    <style type="text/css">
+        /* Chart.js */
+        @-webkit-keyframes chartjs-render-animation {
+            from { opacity: 0.99 }
+            to { opacity: 1 }
+        }
+
+        @keyframes chartjs-render-animation {
+            from { opacity: 0.99 }
+            to { opacity: 1 }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 假设顶部栏和侧边栏是静态的，这里直接放置它们的内容 -->
+<div class="navbar navbar-dark bg-dark box-shadow">
+    <div class="container d-flex justify-content-between">
+        <a href="#" class="navbar-brand d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            <strong>学生管理系统</strong>
+        </a>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">
+                            学生管理 <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <!-- 更多导航项... -->
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <form action="/adm/stubyclass" method="post">
+                <!-- 错误信息部分，假设没有错误，这部分可以省略 -->
+                <input type="hidden" name="_method" value="put" />
+                <input type="hidden" name="ininclass" value="高三一班" />
+
+                <div class="form-group">
+                    <label for="stuId">学号</label>
+                    <input id="stuId" name="stuId" type="text" class="form-control" placeholder="请输入学号" value="20210001">
+                </div>
+                <div class="form-group">
+                    <label for="stuName">姓名</label>
+                    <input id="stuName" name="stuName" type="text" class="form-control" placeholder="请输入姓名" value="李华">
+                </div>
+                <div class="form-group">
+                    <label for="stuPass">密码</label>
+                    <input id="stuPass" name="stuPass" type="password" class="form-control" placeholder="请输入密码" value="password">
+                </div>
+                <div class="form-group">
+                    <label for="stuClass">班级</label>
+                    <select id="stuClass" class="form-control" name="stuClass">
+                        <option value="高三一班" selected>高三一班</option>
+                        <option value="高二二班">高二二班</option>
+                        <option value="高一一班">高一一班</option>
+                        <!-- 更多选项... -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>性别</label><br/>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="stuSex" id="male" value="1" checked>
+                        <label class="form-check-label" for="male">男</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="stuSex" id="female" value="0">
+                        <label class="form-check-label" for="female">女</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="stuTele">电话</label>
+                    <input id="stuTele" name="stuTele" type="text" class="form-control" placeholder="请输入电话号码" value="123456789">
+                </div>
+                <button type="submit" class="btn btn-primary">修改</button>
+            </form>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.1/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+
+<!-- Icons -->
+<script src="../js/feather.min.js"></script>
+<script>
+    feather.replace();
+</script>
+
+</body>
+</html>

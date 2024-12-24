@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>教师添加</title>
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../css/dashboard.css" rel="stylesheet">
+    <style type="text/css">
+        /* Chart.js */
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Topbar placeholder for static content or can be removed if not needed -->
+<div id="topbar-placeholder">
+    <!-- Static topbar content goes here or remove this section if it's not required -->
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">学生成绩管理系统</a>
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="/logout">退出</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar placeholder for static content or can be removed if not needed -->
+        <div id="sidebar-placeholder">
+            <!-- Static sidebar content goes here or remove this section if it's not required -->
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/adm/dashboard">
+                                <span data-feather="home"></span>
+                                首页
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/adm/classes">
+                                <span data-feather="users"></span>
+                                班级管理
+                            </a>
+                        </li>
+                        <!-- 可以添加更多菜单项 -->
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <form action="/adm/classAdd" method="post">
+                <!-- 提示框，假设没有错误消息，这部分可以省略或提供一个默认消息 -->
+                <div class="alert alert-danger" role="alert" id="error-alert" style="display: none;">
+                    示例错误消息
+                </div>
+
+                <div class="form-group">
+                    <label>班级号</label>
+                    <input name="classId" type="text" class="form-control" placeholder="请输入班级号">
+                </div>
+                <div class="form-group">
+                    <label>班级名</label>
+                    <input name="className" type="text" class="form-control" placeholder="请输入班级名">
+                </div>
+
+                <button type="submit" class="btn btn-primary">添加</button>
+            </form>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="../js/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript" src="../js/popper.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="../js/feather.min.js"></script>
+<script>
+    feather.replace();
+
+    // Example script to handle error messages dynamically (if needed)
+    document.addEventListener('DOMContentLoaded', function () {
+        var errorMessage = '这里放置从服务器端获取的实际错误信息'; // Replace with actual server-side error message
+        if (errorMessage) {
+            document.getElementById('error-message').textContent = errorMessage;
+            document.getElementById('error-alert').style.display = 'block';
+        }
+    });
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const classId = document.querySelector('input[name="classId"]').value;
+        const className = document.querySelector('input[name="className"]').value;
+
+        if (!classId || !className) {
+            e.preventDefault();
+            document.getElementById('error-alert').textContent = '班级号和班级名不能为空！';
+            document.getElementById('error-alert').style.display = 'block';
+        }
+    });
+</script>
+</body>
+
+</html>

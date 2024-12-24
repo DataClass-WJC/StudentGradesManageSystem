@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>学生信息管理系统登录</title>
+	<!-- Bootstrap core CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Custom styles for this template -->
+	<link href="css/signin.css" rel="stylesheet">
+
+	<!-- JavaScript files -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.0/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+
+	<!-- Icons -->
+	<script src="https://unpkg.com/feather-icons"></script>
+
+	<script>
+		function send(i) {
+			var form = document.getElementById("loginForm");
+			var actionUrls = [
+				"stu/login", // 学生登录URL
+				"tea/login", // 教师登录URL
+				"adm/login"  // 管理员登录URL
+			];
+			if (i >= 0 && i < actionUrls.length) {
+				form.action = actionUrls[i];
+				form.submit();
+			}
+			return false;
+		}
+
+		// Initialize Feather icons
+		feather.replace();
+	</script>
+</head>
+<body class="text-center">
+<form id="loginForm" class="form-signin" method="post">
+	<img class="mb-4" src="img/bootstrap-solid.svg" alt="" width="72" height="72">
+	<h1 class="h3 mb-3 font-weight-normal">请登录</h1>
+
+	<!-- 提示框，假设没有错误消息，这部分可以省略或提供一个默认消息 -->
+	<!-- 如果需要显示固定的提示信息，取消下面的注释并填写消息文本 -->
+	<!--
+    <div class="alert alert-danger" role="alert">
+        示例错误消息
+    </div>
+    -->
+
+	<label for="username" class="sr-only">用户名</label>
+	<input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+	<label for="password" class="sr-only">密码</label>
+	<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+
+	<button class="btn btn-lg btn-success btn-block" onclick="return send(0)" id="bt0">学生登录</button>
+	<button class="btn btn-lg btn-primary btn-block" onclick="return send(1)" id="bt1">教师登录</button>
+	<button class="btn btn-lg btn-danger btn-block" onclick="return send(2)" id="bt2">管理员登录</button>
+	<p class="mt-5 mb-3 text-muted">© 学生成绩信息管理系统</p>
+</form>
+</body>
+</html>

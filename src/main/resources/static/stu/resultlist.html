@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>学生成绩信息管理系统</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+    <style type="text/css">
+        /* Chart.js */
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 假设topbar和sidebar是静态的，并且已经包含在页面中 -->
+<div class="container-fluid">
+    <div class="row">
+        <!-- 静态侧边栏 -->
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar" id="sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">管理个人信息</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">查询成绩</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <form method="get" action="/stu/selectResByTerm/1">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="resTerm" placeholder="请输入学期例：（18-2020-1）" aria-label="请输入学期例：（2020-1）" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">按学期查询</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>课程名</th>
+                        <th>成绩</th>
+                        <th>学期</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 示例数据 -->
+                    <tr>
+                        <td>高等数学</td>
+                        <td>95</td>
+                        <td>18-2020-1</td>
+                    </tr>
+                    <tr>
+                        <td>大学英语</td>
+                        <td>88</td>
+                        <td>18-2020-1</td>
+                    </tr>
+                    <!-- 更多示例行可以在这里添加 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页信息 -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="/stu/toresdmin/1">首页</a></li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1 <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/stu/toresdmin/2">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/stu/toresdmin/2">下一页</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/stu/toresdmin/5">末页</a>
+                    </li>
+                </ul>
+            </nav>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+
+<!-- Icons -->
+<script src="js/feather.min.js"></script>
+<script>
+    feather.replace()
+</script>
+</body>
+</html>
