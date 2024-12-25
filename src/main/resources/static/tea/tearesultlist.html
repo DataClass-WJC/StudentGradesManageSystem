@@ -53,7 +53,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
             <h2>
-                <a class="btn btn-info" href="emp" th:href="@{/tea/resadd}">成绩添加</a>
+                <a class="btn btn-info" href="addResult.html">成绩添加</a>
                 <a style="float: right" class="btn btn-outline-secondary" href="" th:href="@{/tea/toteadmin/1}">查询所有学生成绩信息</a>
             </h2>
             <form method="get" th:action="@{/tea/selectById/1}" >
@@ -131,6 +131,8 @@
 <script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
 
 <!-- Icons -->
+<script src="../js/axios.min.js"></script>
+<script src="../js/axiosConfig.js"></script>
 <script type="text/javascript" src="../js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
 <script>
     feather.replace()
