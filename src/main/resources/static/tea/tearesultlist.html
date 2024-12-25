@@ -133,14 +133,17 @@
         const tableBody = document.getElementById('allResultsTable').getElementsByTagName('tbody')[0];
         tableBody.innerHTML = '';  // 清空现有的行
 
+        // 定义要渲染的字段名
+        const fields = ['stuId', 'subName', 'resNum', 'resTerm'];
+
         // 遍历结果并为每个结果创建一行
         results.forEach((item, index) => {
             const row = document.createElement('tr');
 
-            // 创建单元格并添加到行中
-            Object.keys(item).forEach(key => {
+            // 创建单元格并添加到行中，只针对定义的字段
+            fields.forEach(field => {
                 const cell = document.createElement('td');
-                cell.textContent = item[key];
+                cell.textContent = item[field] !== undefined ? item[field] : '';
                 row.appendChild(cell);
             });
 
