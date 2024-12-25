@@ -10,9 +10,14 @@
         <result property="resNum" column="res_num"/>
         <result property="resTerm" column="res_term"/>
     </resultMap>
+    <!--    添加-->
     <insert id="addResult">
         insert into result (res_id,stu_id,sub_name,res_num,res_term)
         select null,#{result.stuId},#{result.subName},#{result.resNum},#{result.resTerm}
             where exists(select * from student where stu_id = #{result.stuId})
     </insert>
+    <!-- 查询所有成绩信息 -->
+    <select id="getAllResult" resultMap="resultMap">
+        SELECT * FROM result
+    </select>
 </mapper>

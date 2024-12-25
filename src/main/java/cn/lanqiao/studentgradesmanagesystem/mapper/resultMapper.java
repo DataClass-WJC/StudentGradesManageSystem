@@ -20,6 +20,8 @@ public interface resultMapper {
     /**
      * 查询所有成绩
      */
-    @Select("select * from result")
+
     List<Result> getAllResult();
+
+
 }
