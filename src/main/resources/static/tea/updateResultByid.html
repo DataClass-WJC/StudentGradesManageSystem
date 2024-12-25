@@ -92,7 +92,37 @@
 <!-- Icons -->
 <script type="text/javascript" src="../js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
 <script>
+    //当点击“修改”按钮时，显示模态对话框，并填充表单数据
+    $('#editButton').click(function() {
+        $('#editModal').modal('show');
+        // 假设你已经有了要编辑的数据
+        $('#stuId').val(data.stuId);
+        $('#subName').val(data.subName);
+        $('#resNum').val(data.resNum);
+        $('#resTerm').val(data.resTerm);
+    });
     feather.replace();
+    //在模态对话框中点击“保存”按钮时，使用AJAX提交表单数据，并在成功后更新页面
+    $('#saveChanges').click(function() {
+        var formData = $('#editForm').serialize(); // 序列化表单数据
+        $.ajax({
+            type: 'POST',
+            url: '/tea/updateResult', // 提交到后端的URL
+            data: formData,
+            success: function(response) {
+                // 假设后端返回了更新后的数据
+                // 在这里更新页面上的数据
+                $('#editModal').modal('hide'); // 关闭模态对话框
+                // 更新页面上的数据
+                alert('修改成功');
+                // 例如：$('#someElement').text(response.someData);
+            },
+            error: function(xhr, status, error) {
+                // 处理错误情况
+                alert('修改失败');
+            }
+        });
+    });
 </script>
 
 </body>

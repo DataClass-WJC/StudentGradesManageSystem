@@ -4,9 +4,8 @@ import cn.lanqiao.studentgradesmanagesystem.service.resultService;
 import cn.lanqiao.studentgradesmanagesystem.pojo.Result;
 import cn.lanqiao.studentgradesmanagesystem.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,6 +29,20 @@ public class teaResultController {
         }
     }
 
+    //修改成绩
+    @RequestMapping("/updateResult")
+    public ResponseUtils updateResult(@RequestBody Result result){
+        try {
+            int addResult = resultService.updateByResId(result);
+            if (addResult > 0) {
+                return new ResponseUtils<>(200,"修改成功");
+            }else {
+                return new ResponseUtils<>(500,"修改失败");
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * 查询所有信息

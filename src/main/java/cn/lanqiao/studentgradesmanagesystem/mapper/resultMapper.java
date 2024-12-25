@@ -4,6 +4,7 @@ import cn.lanqiao.studentgradesmanagesystem.pojo.Result;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,12 @@ public interface resultMapper {
      * @return
      */
     int addResult(@Param("result") Result result);
+
+    /**
+     * 根据Id修改成绩
+     */
+    @Update("update result set  sub_name = #{result.subName} , res_num = #{result.resNum} , res_term = #{result.resTerm} where res_id = #{result.resId} AND stu_id = #{result.stuId}")
+    int updateByResId(@Param("result") Result result);
 
     /**
      * 查询所有成绩

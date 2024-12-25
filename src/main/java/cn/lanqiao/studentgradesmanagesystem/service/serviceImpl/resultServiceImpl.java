@@ -32,4 +32,14 @@ public class resultServiceImpl implements resultService {
             return null;
         }
     }
+
+    @Override
+    public int updateByResId(Result result) {
+        int result1 = resultMapper.updateByResId(result);
+        if (result1 > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

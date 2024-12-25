@@ -10,4 +10,5 @@ import java.util.List;
 public interface resultService {
     int addResult(Result result);
     List<Result> getAllResult();
+    int updateByResId(Result result);
 }
