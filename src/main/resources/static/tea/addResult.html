@@ -61,21 +61,21 @@
 
                 <div class="form-group">
                     <label>学号</label>
-                    <input name="stuId" type="text" class="form-control" placeholder="请输入学号" th:value="${res!=null}?${res.stuId}">
+                    <input name="stuId" type="text" class="form-control" id="studentId" placeholder="请输入学号" th:value="${res!=null}?${res.stuId}">
                 </div>
                 <div class="form-group">
                     <label>课程名</label>
-                    <input name="subName" type="text" class="form-control" placeholder="请输入课程名" th:value="${res!=null}?${res.subName}">
+                    <input name="subName" type="text" class="form-control" id="className" placeholder="请输入课程名" th:value="${res!=null}?${res.subName}">
                 </div>
                 <div class="form-group">
                     <label>成绩</label>
-                    <input name="resNum" type="text" class="form-control" placeholder="请输入成绩" th:value="${res!=null}?${res.resNum}">
+                    <input name="resNum" type="text" class="form-control" id="scoreValue" placeholder="请输入成绩" th:value="${res!=null}?${res.resNum}">
                 </div>
                 <div class="form-group">
                     <label>学期</label>
-                    <input name="resTerm" type="text" class="form-control" placeholder="请输入学期" th:value="${res!=null}?${res.resTerm}">
+                    <input name="resTerm" type="text" class="form-control" id="semester" placeholder="请输入学期" th:value="${res!=null}?${res.resTerm}">
                 </div>
-            <button type="submit" class="btn btn-primary" >添加</button>
+            <button type="button" class="btn btn-primary" >添加</button>
             </form>
         </main>
     </div>
@@ -90,8 +90,35 @@
 
 <!-- Icons -->
 <script type="text/javascript" src="../js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
+<script src="../js/axios.min.js"></script>
 <script>
-    feather.replace();
+    document.querySelector(".btn-primary").addEventListener("click",function () {
+        var studentId = document.querySelector("#studentId").value;
+        var className = document.querySelector("#className").value;
+        var scoreValue = document.querySelector("#scoreValue").value;
+        var semester = document.querySelector("#semester").value;
+        axios({
+            url:"http://localhost:8080/tea/addResult",
+            method:"post",
+            data:{
+                stuId:studentId,
+                subName:className,
+                resNum:scoreValue,
+                resTerm:semester
+            }
+        }).then((reult)=>{
+            if (reult.data.code===200){
+                alert("添加成功");
+                // 设置计时器，在3秒（3000毫秒）后跳转页面
+                setTimeout(function() {
+                    // 跳转到目标页面
+                    window.location.href = "tearesultlist.html"; // 将 "target_page.html" 替换为实际的目标URL
+                }, 1000); // 1000 毫秒 = 1 秒
+            }
+        }).catch((error)=>{
+          alert("添加失败"+error);
+        })
+    })
 </script>
 
 </body>
