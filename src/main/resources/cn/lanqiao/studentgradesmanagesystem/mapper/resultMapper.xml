@@ -18,6 +18,6 @@
     </insert>
     <!-- 查询所有成绩信息 -->
     <select id="getAllResult" resultMap="resultMap">
-        SELECT * FROM result
+        select stu_id,sub_name,res_num,res_term FROM result
     </select>
 </mapper>
