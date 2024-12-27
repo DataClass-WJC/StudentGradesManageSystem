@@ -11,4 +11,5 @@ public interface resultService {
     int addResult(Result result);
     List<Result> getAllResult();
     int updateByResId(Result result);
+    List<Result> getResByStuId(@Param("stuId") String stuId);
 }

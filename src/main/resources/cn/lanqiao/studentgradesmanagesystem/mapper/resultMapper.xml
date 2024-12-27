@@ -18,6 +18,10 @@
     </insert>
     <!-- 查询所有成绩信息 -->
     <select id="getAllResult" resultMap="resultMap">
-        select stu_id,sub_name,res_num,res_term FROM result
+        select * FROM result
+    </select>
+    <!-- 根据学号查询成绩信息 -->
+    <select id="getResByStuId" resultMap="resultMap">
+        select stu_id,sub_name,res_num,res_term from result where stu_id = #{stuId}
     </select>
 </mapper>

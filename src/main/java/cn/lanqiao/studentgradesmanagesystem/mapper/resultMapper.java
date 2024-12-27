@@ -30,5 +30,9 @@ public interface resultMapper {
 
     List<Result> getAllResult();
 
+    /**
+     * 根据学号查询成绩
+     */
 
+    List<Result> getResByStuId(@Param("stuId") String stuId);
 }

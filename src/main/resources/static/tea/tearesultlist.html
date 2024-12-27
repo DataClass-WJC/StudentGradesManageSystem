@@ -48,9 +48,9 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
             <h2>
                 <a class="btn btn-info" href="addResult.html">成绩添加</a>
-<!--                <a style="float: right" class="btn btn-outline-secondary" href="javascript:void(0);" id="getAllResultsBtn">查询所有学生成绩信息</a>-->
+                <a style="float: right" class="btn btn-outline-secondary" href="javascript:void(0);" id="getAllResultsBtn">查询所有学生成绩信息</a>
             </h2>
-            <form method="get" th:action="@{/tea/selectById/1}">
+            <form id="queryForm" method="get" th:action="@{/tea/selectById/1}">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" name="stuId" placeholder="请输入学号" aria-label="请输入学号" aria-describedby="button-addon2">
                     <div class="input-group-append">
@@ -103,29 +103,10 @@
 
 </body>
 </html>
-
 <!-- 引入 Axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    let result=[];
-    // 查询所有学生成绩信息
-    axios({
-        url: "http://localhost:8080/tea/getAllResult",
-        method: "post"
-    }).then((response) => {
-        console.log(response.data);  // 打印完整的响应数据
-        if (response.data.code === 200 && response.data.data && response.data.data.length > 0) {
-            result = response.data;
-            renderTable(result);
-        } else {
-            console.log('没有成绩数据或数据为空');
-            alert('没有找到任何成绩信息');
-        }
-    }).catch((error) => {
-        console.error('请求失败：', error);
-        alert('查询失败，请稍后再试');
-    });
-
+    let result = [];
     // 渲染表格函数
     function renderTable(data) {
         // 确保data.data是你要遍历的对象数组
@@ -167,6 +148,60 @@
             tableBody.appendChild(row);
         });
     }
+
+    // 查询所有学生成绩信息
+    // 定义一个获取所有成绩结果的函数
+    function fetchAllResults() {
+        axios({
+            url: "http://localhost:8080/tea/getAllResult",
+            method: "post"
+        }).then((response) => {
+            console.log(response.data);  // 打印完整的响应数据
+            if (response.data.code === 200 && response.data.data && response.data.data.length > 0) {
+                result = response.data;
+                renderTable(result);
+            } else {
+                console.log('没有成绩数据或数据为空');
+                alert('没有找到任何成绩信息');
+            }
+        }).catch((error) => {
+            console.error('请求失败：', error);
+            alert('查询失败，请稍后再试');
+        });
+    }
+
+    // 当DOM完全加载后执行
+    document.addEventListener('DOMContentLoaded', function() {
+        // 页面加载完成后自动获取所有结果
+        fetchAllResults();
+
+        // 如果你仍然想要保留按钮的功能，可以添加下面这行代码
+        document.getElementById('getAllResultsBtn').addEventListener('click', fetchAllResults);
+    });
+
+    // 根据Id查询
+    document.getElementById('queryForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let stuIdInput = document.querySelector('[name="stuId"]').value;
+
+        axios({
+            url: "http://localhost:8080/tea/getByResId",
+            method: "post",
+            data: {
+                stuId: stuIdInput
+            }
+        }).then((response) => {
+            console.log("Response from server:", response.data);  // 打印完整的响应数据
+            if (response.data.code === 200 && Array.isArray(response.data.data) && response.data.data.length > 0) {
+                renderTable({ data: response.data.data });  // 确保传递给renderTable的是一个包含data属性的对象
+            } else {
+                alert('查询失败');
+            }
+        }).catch((error) => {
+            console.error('Error during request:', error);
+            alert('查询失败，请稍后再试' + error);
+        });
+    });
 
     // 定义编辑和删除函数 (这里仅作为示例)
     function editResult(index) {

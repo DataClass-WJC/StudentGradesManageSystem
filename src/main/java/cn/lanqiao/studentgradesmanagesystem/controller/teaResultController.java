@@ -52,7 +52,7 @@ public class teaResultController {
     public ResponseUtils getAllResult(){
         try {
             List<Result> allResult = resultService.getAllResult();
-            System.out.println(allResult);
+//            System.out.println(allResult);
             if(allResult == null){
                 return new ResponseUtils(500,"查询失败");
             }else {
@@ -67,4 +67,20 @@ public class teaResultController {
     /**
      * 查询个人信息
      */
+    @RequestMapping("/getByResId")
+    public ResponseUtils getByResId(@RequestBody Result result){
+        try {
+            List<Result> resByStuId = resultService.getResByStuId(result.getStuId());
+            System.out.println(resByStuId);
+            if(resByStuId != null){
+                return new ResponseUtils(200,"查询成功",resByStuId);
+            }else {
+                return new ResponseUtils(500,"查询失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+//            return new ResponseUtils(400,"查询异常");
+            throw new RuntimeException();
+        }
+    }
 }
