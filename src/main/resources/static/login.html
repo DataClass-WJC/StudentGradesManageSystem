@@ -16,28 +16,9 @@
 
 	<!-- Icons -->
 	<script src="https://unpkg.com/feather-icons"></script>
-
-	<script>
-		function send(i) {
-			var form = document.getElementById("loginForm");
-			var actionUrls = [
-				"stu/login", // 学生登录URL
-				"tea/login", // 教师登录URL
-				"adm/login"  // 管理员登录URL
-			];
-			if (i >= 0 && i < actionUrls.length) {
-				form.action = actionUrls[i];
-				form.submit();
-			}
-			return false;
-		}
-
-		// Initialize Feather icons
-		feather.replace();
-	</script>
 </head>
-<body class="text-center">
-<form id="loginForm" class="form-signin" method="post">
+<body class="text-center" >
+<form id="loginForm" class="form-signin" method="post" >
 	<img class="mb-4" src="img/bootstrap-solid.svg" alt="" width="72" height="72">
 	<h1 class="h3 mb-3 font-weight-normal">请登录</h1>
 
@@ -49,15 +30,52 @@
     </div>
     -->
 
-	<label for="username" class="sr-only">用户名</label>
+	<label for="username" class="sr-only">用户名:</label>
 	<input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-	<label for="password" class="sr-only">密码</label>
+	<label for="password" class="sr-only">密码:</label>
 	<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
 
-	<button class="btn btn-lg btn-success btn-block" onclick="return send(0)" id="bt0">学生登录</button>
-	<button class="btn btn-lg btn-primary btn-block" onclick="return send(1)" id="bt1">教师登录</button>
-	<button class="btn btn-lg btn-danger btn-block" onclick="return send(2)" id="bt2">管理员登录</button>
+	<button class="btn btn-lg btn-success btn-block" onclick="send(0)" id="bt0">学生登录</button>
+	<button class="btn btn-lg btn-primary btn-block" onclick="send(1)" id="bt1">教师登录</button>
+	<button class="btn btn-lg btn-danger btn-block" onclick="send(2)" id="bt2">管理员登录</button>
 	<p class="mt-5 mb-3 text-muted">© 学生成绩信息管理系统</p>
 </form>
+<script src="js/axios.min.js"></script>
+<script src="js/axiosConfig.js"></script>
+<script>
+	// let btn = document.querySelector(".btn");
+	// btn.onclick= function() {
+	// 	//获取用户名和密码
+	// 	let username = document.querySelector("#username").value;
+	// 	let password = document.querySelector("#password").value;
+	// 	axios({
+	// 		url: "",
+	// 		method: "post",
+	// 		data: {
+	// 			username: username,
+	// 			password: password
+	// 		}
+	// 	}).then((result) =>{
+	// 		console.log(result);
+	// 		if (result.data.code == 200){
+	// 			//跳转教师功能
+	// 			location.href ="/tea/tearesultlist.html";
+	// 		}else {
+	// 			alert("用户名或密码错误，请重新输入");
+	// 			location.href ="/login.html"
+	// 		}
+	// 	})
+	// }
+	function send(value){
+		if(value===0){
+			location.href="stu/stuindex.html"
+		}else if(value===1){
+			location.href="tea/tearesultlist.html"
+		}else if (value===2){
+			location.href="admin/adminindex.html"
+		}
+	}
+</script>
 </body>
 </html>
+
