@@ -1,4 +1,4 @@
-package cn.lanqiao.studentgradesmanagesystem.service.impl;
+package cn.lanqiao.studentgradesmanagesystem.service.Impl;
 
 import cn.lanqiao.studentgradesmanagesystem.mapper.resultMapper;
 
