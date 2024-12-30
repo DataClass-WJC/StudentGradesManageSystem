@@ -23,6 +23,11 @@ public interface resultMapper {
      */
     @Update("update result set  sub_name = #{result.subName} , res_num = #{result.resNum} , res_term = #{result.resTerm} where res_id = #{result.resId} AND stu_id = #{result.stuId}")
     int updateByResId(@Param("result") Result result);
+    /**
+     * 删除成绩
+     */
+    int deleteResult(int resId);
+
 
     /**
      * 查询所有成绩

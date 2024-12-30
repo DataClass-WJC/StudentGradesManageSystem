@@ -10,5 +10,8 @@ import java.util.List;
 public interface resultService {
     int addResult(Result result);
     List<Result> getAllResult();
+    //修改
     int updateByResId(Result result);
+    //删除
+    int deleteResult(int resId);
 }

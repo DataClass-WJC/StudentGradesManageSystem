@@ -107,110 +107,21 @@
 <!-- 引入 Axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    let result=[];
-    // 查询所有学生成绩信息
-    axios({
-        url: "http://localhost:8080/tea/getAllResult",
-        method: "post"
-    }).then((response) => {
-        console.log(response.data);  // 打印完整的响应数据
-        if (response.data.code === 200 && response.data.data && response.data.data.length > 0) {
-            result = response.data;
-            renderTable(result);
-        } else {
-            console.log('没有成绩数据或数据为空');
-            alert('没有找到任何成绩信息');
-        }
-    }).catch((error) => {
-        console.error('请求失败：', error);
-        alert('查询失败，请稍后再试');
+    let result = [];
+    // 页面加载完成后执行查询
+    document.addEventListener('DOMContentLoaded', function() {
+        getAllResults();
     });
 
-    // 渲染表格函数
-    function renderTable(data) {
-        // 确保data.data是你要遍历的对象数组
-        const results = data.data || [];
-        const tableBody = document.getElementById('allResultsTable').getElementsByTagName('tbody')[0];
-        tableBody.innerHTML = '';  // 清空现有的行
-
-        // 定义要渲染的字段名
-        const fields = ['stuId', 'subName', 'resNum', 'resTerm'];
-
-        // 遍历结果并为每个结果创建一行
-        results.forEach((item, index) => {
-            const row = document.createElement('tr');
-
-            // 创建单元格并添加到行中，只针对定义的字段
-            fields.forEach(field => {
-                const cell = document.createElement('td');
-                cell.textContent = item[field] !== undefined ? item[field] : '';
-                row.appendChild(cell);
-            });
-
-            // 添加操作按钮（假设需要一个编辑和删除按钮）
-            const actionCell = document.createElement('td');
-            const editButton = document.createElement('button');
-            editButton.textContent = '编辑';
-            editButton.classList.add('btn', 'btn-sm', 'btn-primary');  // 假设使用了Bootstrap样式
-            editButton.onclick = () => editResult(index);  // 编辑函数待定义
-
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = '删除';
-            deleteButton.classList.add('btn', 'btn-sm', 'btn-danger');
-            deleteButton.onclick = () => deleteResult(index);  // 删除函数待定义
-
-            actionCell.appendChild(editButton);
-            actionCell.appendChild(document.createTextNode(' '));  // 添加一点间隔
-            actionCell.appendChild(deleteButton);
-
-            row.appendChild(actionCell);
-            tableBody.appendChild(row);
-        });
-    }
-
-    // 定义编辑和删除函数 (这里仅作为示例)
-    function editResult(index) {
-        alert(`编辑第${index + 1}条成绩`);
-        // 这里可以放置编辑逻辑
-    }
-
-    function deleteResult(index) {
-        if (confirm(`确定要删除第${index + 1}条成绩吗？`)) {
-            // 这里可以放置删除逻辑
-            console.log(`删除第${index + 1}条成绩`);
-        }
-    }
-    // 确认删除功能
-    function confirmDelete(resId) {
-        if (confirm('确定要删除该成绩吗？')) {
-            axios({
-                url: `http://localhost:8080/tea/deleteResult/${resId}`,
-                method: "post",
-                data: {
-                    _method: 'delete'  // 模拟 DELETE 请求
-                }
-            }).then((response) => {
-                if (response.data.code === 200) {
-                    alert('删除成功');
-                    // 重新加载成绩列表
-                    getAllResults();
-                } else {
-                    alert('删除失败');
-                }
-            }).catch((error) => {
-                console.error('删除失败：', error);
-                alert('删除失败，请稍后再试');
-            });
-        }
-    }
-    // 重新加载成绩列表（用于删除后刷新）
+    // 获取所有成绩数据
     function getAllResults() {
         axios({
-            url: "http://localhost:8080/tea/getAllResult",
+            url: "http://localhost:8081/tea/getAllResult",
             method: "post"
         }).then((response) => {
             if (response.data.code === 200 && response.data.data && response.data.data.length > 0) {
-                renderTable(response.data.data);
+                result=response.data;
+                renderTable(result);
             } else {
                 console.log('没有成绩数据或数据为空');
                 alert('没有找到任何成绩信息');
@@ -220,4 +131,110 @@
             alert('查询失败，请稍后再试');
         });
     }
+    // 根据Id查询
+    document.getElementById('queryForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let stuIdInput = document.querySelector('[name="stuId"]').value;
+
+        axios({
+            url: "http://localhost:8081/tea/getByResId",
+            method: "post",
+            data: {
+                stuId: stuIdInput
+            }
+        }).then((response) => {
+            console.log("Response from server:", response.data);  // 打印完整的响应数据
+            if (response.data.code === 200 && Array.isArray(response.data.data) && response.data.data.length > 0) {
+                renderTable({ data: response.data.data });  // 确保传递给renderTable的是一个包含data属性的对象
+            } else {
+                alert('查询失败');
+            }
+        }).catch((error) => {
+            console.error('Error during request:', error);
+            alert('查询失败，请稍后再试' + error);
+        });
+    });
+
+
+
+    function renderTable(data) {
+        const results = data.data || [];
+        const tableBody = document.getElementById('allResultsTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
+        results.forEach(item => {
+            const row = document.createElement('tr');
+
+            // 添加数据列
+            ['stuId', 'subName', 'resNum', 'resTerm'].forEach(field => {
+                const cell = document.createElement('td');
+                cell.textContent = item[field] || '';
+                row.appendChild(cell);
+            });
+
+            // 修改操作按钮部分
+            const actionCell = document.createElement('td');
+
+            const editButton = document.createElement('button');
+            editButton.textContent = '编辑';
+            editButton.classList.add('btn', 'btn-sm', 'btn-primary', 'mr-2');
+            editButton.onclick = () => editResult(item.stuId, item.subName, item.resNum, item.resTerm);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = '删除';
+            deleteButton.classList.add('btn', 'btn-sm', 'btn-danger');
+            // 使用 item.resId 而不是索引
+            deleteButton.onclick = () => {console.log('删除按钮点击，resId:', item.resId); // 添加调试日志
+                confirmDelete(item.resId);}
+
+            actionCell.appendChild(editButton);
+            actionCell.appendChild(document.createTextNode(' '));
+            actionCell.appendChild(deleteButton);
+
+            row.appendChild(actionCell);
+            tableBody.appendChild(row);
+        });
+    }
+
+    // 修改删除确认函数
+    function confirmDelete(resId) {
+        if (!resId) {
+            alert('未找到成绩ID');
+            return;
+        }
+
+        console.log(resId);
+        if (confirm('确定要删除这条成绩记录吗？')) {
+            axios({
+                url: `http://localhost:8081/tea/deleteResult`,
+                method: "delete",
+                data:{
+                    resId:resId
+                }
+            }).then((response) => {
+                if (response.data.code === 200) {
+                    alert('删除成功！');
+                    // 重新加载表格数据
+                    getAllResults();
+                } else {
+                    alert('删除失败：' + response.data.msg);
+                }
+            }).catch((error) => {
+                console.error('删除失败：', error);
+                alert('删除失败，请稍后重试');
+            });
+        }
+    }
+
+    // 编辑成绩
+    function editResult(stuId, subName, resNum, resTerm) {
+        const params = new URLSearchParams({
+            stuId: stuId,
+            subName: subName,
+            resNum: resNum,
+            resTerm: resTerm
+        });
+        window.location.href = `/tea/updateResultByid.html?${params.toString()}`;
+    }
+
+
 </script>

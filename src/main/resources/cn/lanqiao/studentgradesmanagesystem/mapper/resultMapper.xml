@@ -16,8 +16,15 @@
         select null,#{result.stuId},#{result.subName},#{result.resNum},#{result.resTerm}
             where exists(select * from student where stu_id = #{result.stuId})
     </insert>
+<!--     修改成绩-->
+
+
+    <!-- 删除成绩 -->
+    <delete id="deleteResult">
+        DELETE FROM result WHERE res_id = #{resId}
+    </delete>
     <!-- 查询所有成绩信息 -->
     <select id="getAllResult" resultMap="resultMap">
-        select stu_id,sub_name,res_num,res_term FROM result
+        select * FROM result LIMIT #{offset}, #{pageSize}
     </select>
 </mapper>
