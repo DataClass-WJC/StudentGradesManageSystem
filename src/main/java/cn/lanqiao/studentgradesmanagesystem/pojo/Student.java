@@ -15,6 +15,5 @@ public class Student {
   private String stuClass;
   private long stuSex;
   private String stuTele;
-  private String isDelete;
 
 }

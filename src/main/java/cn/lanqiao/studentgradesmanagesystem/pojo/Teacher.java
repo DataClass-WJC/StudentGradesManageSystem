@@ -15,7 +15,4 @@ public class Teacher {
   private String teaSex;
   private String teaTele;
 
-
-
-
 }
