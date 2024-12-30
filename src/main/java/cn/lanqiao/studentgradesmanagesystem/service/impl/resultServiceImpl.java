@@ -1,14 +1,13 @@
-package cn.lanqiao.studentgradesmanagesystem.service.Impl;
+package cn.lanqiao.studentgradesmanagesystem.service.impl;
 
 import cn.lanqiao.studentgradesmanagesystem.mapper.resultMapper;
 
-import cn.lanqiao.studentgradesmanagesystem.pojo.Result;
+import cn.lanqiao.studentgradesmanagesystem.model.pojo.Result;
 import cn.lanqiao.studentgradesmanagesystem.service.resultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 
 @Service
 public class resultServiceImpl implements resultService {

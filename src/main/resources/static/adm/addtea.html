@@ -9,10 +9,10 @@
 
     <title>教师添加</title>
     <!-- Bootstrap core CSS -->
-    <link href=css/bootstrap.min.css rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="../css/dashboard.css" rel="stylesheet">
     <style type="text/css">
         /* Chart.js */
         @-webkit-keyframes chartjs-render-animation {
@@ -38,41 +38,23 @@
     <div class="container d-flex justify-content-between">
         <a href="#" class="navbar-brand d-flex align-items-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="mr-2" viewBox="0 0 24 24" focusable="false"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            <strong>顶部栏</strong>
+            <strong>教师信息添加</strong>
         </a>
     </div>
 </div>
 
 <div class="container-fluid">
     <div class="row">
-        <!-- 静态侧边栏 -->
-        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-            <div class="position-sticky pt-3">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                            仪表板
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
-                            报告
-                        </a>
-                    </li>
-                    <!-- 更多导航链接可以在这里添加 -->
-                </ul>
-            </div>
-        </nav>
-
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <form action="adm/teaAdd" method="post">
+            <form id="teacherForm" action="adm/teaAdd" method="post" onsubmit="return false;">
                 <!-- 提示框 -->
                 <div class="alert alert-danger" role="alert" id="error-alert" style="display:none;">
                     示例错误消息
                 </div>
-
+                <!-- 成功提示框 -->
+                <div class="alert alert-success" role="alert" id="success-alert" style="display:none;">
+                    示例成功消息
+                </div>
                 <div class="form-group">
                     <label for="teaId">工号</label>
                     <input id="teaId" name="teaId" type="text" class="form-control" placeholder="请输入工号" value="">
@@ -80,6 +62,10 @@
                 <div class="form-group">
                     <label for="teaName">姓名</label>
                     <input id="teaName" name="teaName" type="text" class="form-control" placeholder="请输入姓名" value="">
+                </div>
+                <div class="form-group">
+                    <label for="teaPassword">密码</label>
+                    <input id="teaPassword" name="teaPassword" type="password" class="form-control" placeholder="请输入密码" value="">
                 </div>
                 <div class="form-group">
                     <label>性别</label><br/>
@@ -105,29 +91,73 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script type="text/javascript" src="js/jquery-3.2.1.slim.min.js"></script>
-<script type="text/javascript" src="js/popper.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript" src="../js/popper.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
 
 <!-- Icons -->
-<script type="text/javascript" src="js/feather.min.js"></script>
+<script type="text/javascript" src="../js/feather.min.js"></script>
 <script>
     feather.replace();
 </script>
 
+<!-- Axios -->
+<script src="../js/axios.min.js"></script>
+
 <script>
+    document.getElementById('teacherForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // 阻止表单默认提交行为
+
+        // 获取表单数据
+        const formData = new FormData(this);
+        const data = {
+            teaName: formData.get('teaName'),
+            teaSex: formData.get('teaSex'),
+            teaTele: formData.get('teaTele'),
+            teaPass: formData.get('teaPassword'), // 添加密码字段
+            teaId: formData.get('teaId') // 添加工号字段
+        };
+
+        // 使用Axios发送POST请求
+        axios.post('/Teacher', data)
+            .then(function(response) {
+                if (response.data.code === 1) {
+                    // 显示成功提示信息
+                    displaySuccess('教师添加成功');
+                    // 重定向到teabyid.html
+                    window.location.href = 'teabyid.html';
+                } else {
+                    // 显示错误提示信息
+                    displayError('教师添加失败，请重试');
+                }
+            })
+            .catch(function(error) {
+                // 显示错误提示信息
+                displayError('网络错误，请重试');
+                console.error('There was an error!', error);
+            });
+    });
+
     // JavaScript to handle error messages
     function displayError(message) {
         var alert = document.getElementById('error-alert');
-        var msg = alert.querySelector('.alert');
-        msg.textContent = message;
+        alert.textContent = message;
         alert.style.display = 'block';
     }
 
-    // Example of error handling (uncomment and modify as needed)
-    // window.onload = function() {
-    //     displayError('This is a sample error message');
-    // };
+    // JavaScript to handle success messages
+    function displaySuccess(message) {
+        var alert = document.getElementById('success-alert');
+        if (!alert) {
+            alert = document.createElement('div');
+            alert.className = 'alert alert-success';
+            alert.role = 'alert';
+            alert.id = 'success-alert';
+            document.getElementById('teacherForm').insertBefore(alert, document.getElementById('teacherForm').firstChild);
+        }
+        alert.textContent = message;
+        alert.style.display = 'block';
+    }
 </script>
 
 </body>

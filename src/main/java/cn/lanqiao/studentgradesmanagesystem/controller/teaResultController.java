@@ -1,15 +1,12 @@
 package cn.lanqiao.studentgradesmanagesystem.controller;
 
-import cn.lanqiao.studentgradesmanagesystem.pojo.Result;
+import cn.lanqiao.studentgradesmanagesystem.model.pojo.Result;
 import cn.lanqiao.studentgradesmanagesystem.service.resultService;
-
 import cn.lanqiao.studentgradesmanagesystem.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/tea")

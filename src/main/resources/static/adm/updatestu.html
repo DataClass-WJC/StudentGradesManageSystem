@@ -10,7 +10,7 @@
     <title>学生修改</title>
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <script src="../js/axios.min.js"></script>
     <!-- Custom styles for this template -->
     <link href="../css/dashboard.css" rel="stylesheet">
     <style type="text/css">
@@ -59,14 +59,10 @@
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <form action="/adm/stu" method="post">
+            <form id="studentForm">
                 <!-- 错误信息部分，假设没有错误，这部分可以省略 -->
                 <input type="hidden" name="_method" value="put" />
 
-                <div class="form-group">
-                    <label for="stuId">学号</label>
-                    <input id="stuId" name="stuId" type="text" class="form-control" placeholder="请输入学号" value="20210001">
-                </div>
                 <div class="form-group">
                     <label for="stuName">姓名</label>
                     <input id="stuName" name="stuName" type="text" class="form-control" placeholder="请输入姓名" value="李华">
@@ -77,13 +73,9 @@
                 </div>
                 <div class="form-group">
                     <label for="stuClass">班级</label>
-                    <select id="stuClass" class="form-control" name="stuClass">
-                        <option value="高三一班" selected>高三一班</option>
-                        <option value="高二二班">高二二班</option>
-                        <option value="高一一班">高一一班</option>
-                        <!-- 更多选项... -->
-                    </select>
+                    <input id="stuClass" name="stuClass" type="text" class="form-control" placeholder="请输入班级" value="高三一班">
                 </div>
+
                 <div class="form-group">
                     <label>性别</label><br/>
                     <div class="form-check form-check-inline">
@@ -99,7 +91,7 @@
                     <label for="stuTele">电话</label>
                     <input id="stuTele" name="stuTele" type="text" class="form-control" placeholder="请输入电话号码" value="123456789">
                 </div>
-                <button type="submit" class="btn btn-primary">修改</button>
+                <button type="button" class="btn btn-primary" onclick="updateStudent()">修改</button>
             </form>
         </main>
     </div>
@@ -115,6 +107,62 @@
 <script>
     feather.replace();
 </script>
+<script>
+    // 解析URL参数
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
 
+    // 获取stuId参数
+    var stuId = getUrlParameter('stuId');
+
+    // 使用DOMContentLoaded事件确保脚本在DOM加载完成后执行
+    document.addEventListener('DOMContentLoaded', function() {
+        if (stuId) {
+            axios.get('/students/' + stuId)
+                .then(function (response) {
+                    // 填充表单
+                    document.getElementById('stuName').value = response.data.data.stuName;
+                    document.getElementById('stuPass').value = response.data.data.stuPass;
+                    document.getElementById('stuClass').value = response.data.data.stuClass;
+                    document.getElementById(response.data.data.stuSex === '1' ? 'male' : 'female').checked = true;
+                    document.getElementById('stuTele').value = response.data.data.stuTele;
+                })
+                .catch(function (error) {
+                    console.error('Error fetching student data:', error);
+                });
+        }
+    });
+
+    // 处理修改逻辑
+    function updateStudent() {
+        var formData = new FormData(document.getElementById('studentForm'));
+        var studentData = {
+            stuId: stuId,
+            stuName: formData.get('stuName'),
+            stuPass: formData.get('stuPass'),
+            stuClass: formData.get('stuClass'),
+            stuSex: formData.get('stuSex'),
+            stuTele: formData.get('stuTele')
+        };
+
+        axios.put('/students/update', studentData)
+            .then(function (response) {
+                if (response.data.code === 1) {
+                    alert('修改成功');
+                    window.location.href = '/adm/stulist.html';
+                } else {
+                    alert('修改失败');
+                }
+            })
+            .catch(function (error) {
+                console.error('Error updating student data:', error);
+                alert('修改失败');
+            });
+    }
+</script>
 </body>
 </html>

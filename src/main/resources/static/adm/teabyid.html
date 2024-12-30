@@ -30,6 +30,8 @@
             animation: chartjs-render-animation 0.001s;
         }
     </style>
+    <!-- 引入axios库 -->
+    <script src="../js/axios.min.js"></script>
 </head>
 
 <body>
@@ -103,12 +105,11 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
             <h2>
-                <a class="btn btn-info" href="teaadd.html">教师添加</a>
-                <a style="float: right" class="btn btn-outline-secondary" href="allteachers.html">查询所有教师</a>
+                <a class="btn btn-info" href="addtea.html">教师添加</a>
             </h2>
-            <form method="get" action="selectTeaById.html">
+            <form id="searchForm" method="get" action="selectTeaById.html">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="teaId" placeholder="请输入教师工号" aria-label="请输入教师工号" aria-describedby="button-addon2">
+                    <input type="text" class="form-control" id="teaId" name="teaId" placeholder="请输入教师工号" aria-label="请输入教师工号" aria-describedby="button-addon2">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">查询</button>
                     </div>
@@ -116,7 +117,7 @@
             </form>
 
             <div class="table-responsive">
-                <table class="table table-striped table-sm">
+                <table class="table table-striped table-sm" id="teacherTable">
                     <thead>
                     <tr>
                         <th>工号</th>
@@ -128,19 +129,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <!-- 示例数据行 -->
-                    <tr>
-                        <td>1001</td>
-                        <td>李老师</td>
-                        <td>pass123</td>
-                        <td>男</td>
-                        <td>13579246801</td>
-                        <td>
-                            <a class="btn btn-sm btn-primary" href="editTeacher.html?teaId=1001">编辑</a>
-                            <button class="btn btn-sm btn-danger deleteBtn" data-del-uri="deleteTeacher.html?teaId=1001">删除</button>
-                        </td>
-                    </tr>
-                    <!-- 添加更多数据行以匹配实际的教师数量 -->
+                    <!-- 数据将通过axios请求动态加载 -->
                     </tbody>
                 </table>
             </div>
@@ -162,15 +151,115 @@
     feather.replace()
 </script>
 <script>
-    $(".deleteBtn").click(function () {
-        var delUri = $(this).data("del-uri");
-        if (confirm("你确定要删除吗?")) {
-            $("#deleteEmpForm").attr("action", delUri).submit();
-            return false;
+    // 页面加载时获取所有教师数据
+    window.onload = function() {
+        axios.get('http://localhost:8081/Teacher')
+            .then(function (response) {
+                renderTable(response.data.data);
+            })
+            .catch(function (error) {
+                console.error("Error fetching data: ", error);
+            });
+    };
+
+    // 查询按钮点击事件
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const teaId = document.querySelector('input[name="teaId"]').value;
+
+        if (teaId) {
+            // 如果工号不为空，查询指定工号的教师
+            axios.get(`http://localhost:8081/Teacher/${teaId}`)
+                .then(function (response) {
+                    renderTable([response.data.data]);
+                })
+                .catch(function (error) {
+                    console.error("Error fetching data: ", error);
+                });
         } else {
-            return false;
+            // 如果工号为空，查询所有教师
+            axios.get('http://localhost:8081/Teacher')
+                .then(function (response) {
+                    renderTable(response.data.data);
+                })
+                .catch(function (error) {
+                    console.error("Error fetching data: ", error);
+                });
         }
     });
+
+
+    // 渲染表格
+    function renderTable(data) {
+        const tableBody = document.querySelector('table tbody');
+        tableBody.innerHTML = ''; // 清空表格
+
+        data.forEach(teacher => {
+            const row = document.createElement('tr');
+
+            const td1 = document.createElement('td');
+            td1.textContent = teacher.teaId;
+            row.appendChild(td1);
+
+            const td2 = document.createElement('td');
+            td2.textContent = teacher.teaName;
+            row.appendChild(td2);
+
+            const td3 = document.createElement('td');
+            td3.textContent = teacher.teaPass;
+            row.appendChild(td3);
+
+            const td4 = document.createElement('td');
+            td4.textContent = teacher.teaSex === '0' ? '男' : '女'; // 假设 '0' 表示男，'1' 表示女
+            row.appendChild(td4);
+
+            const td5 = document.createElement('td');
+            td5.textContent = teacher.teaTele;
+            row.appendChild(td5);
+
+            const td6 = document.createElement('td');
+            const editBtn = document.createElement('a');
+            editBtn.className = 'btn btn-sm btn-primary';
+            editBtn.href = `upadtetea.html?teaId=${teacher.teaId}`;
+            editBtn.textContent = '编辑';
+            td6.appendChild(editBtn);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-sm btn-danger deleteBtn';
+            deleteBtn.setAttribute('data-del-uri', `deleteTeacher.html?teaId=${teacher.teaId}`);
+            deleteBtn.textContent = '删除';
+            td6.appendChild(deleteBtn);
+            row.appendChild(td6);
+
+            tableBody.appendChild(row);
+        });
+    }
+
+
+    // 使用事件委托绑定删除按钮点击事件
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('table').addEventListener('click', function (event) {
+            if (event.target.classList.contains('deleteBtn')) {
+                var teaId = event.target.getAttribute('data-del-uri').split('=')[1];
+                if (confirm("你确定要删除吗?")) {
+                    axios.delete(`http://localhost:8081/Teacher/delete`, { params: { teaId: teaId } })
+                        .then(function (response) {
+                            if (response.data.code === 1) {
+                                alert("删除成功");
+                                // 重新加载页面
+                                location.reload();
+                            } else {
+                                alert("删除失败");
+                            }
+                        })
+                        .catch(function (error) {
+                            console.error("Error deleting data: ", error);
+                            alert("删除失败");
+                        });
+                }
+            }
+        });
+    });
+
+
 </script>
-</body>
-</html>

@@ -38,19 +38,19 @@
         <!-- 假设侧边栏内容已经被省略 -->
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <form action="/adm/tea" method="post">
+            <form id="teacherForm">
                 <input type="hidden" name="_method" value="put" />
                 <div class="form-group">
                     <label for="teaId">工号</label>
-                    <input id="teaId" name="teaId" type="text" class="form-control" placeholder="请输入工号" value="123456789">
+                    <input id="teaId" name="teaId" type="text" class="form-control" placeholder="请输入工号" readonly>
                 </div>
                 <div class="form-group">
                     <label for="teaName">姓名</label>
-                    <input id="teaName" name="teaName" type="text" class="form-control" placeholder="请输入姓名" value="张老师">
+                    <input id="teaName" name="teaName" type="text" class="form-control" placeholder="请输入姓名">
                 </div>
                 <div class="form-group">
                     <label for="teaPass">密码</label>
-                    <input id="teaPass" name="teaPass" type="password" class="form-control" placeholder="请输入密码" value="password">
+                    <input id="teaPass" name="teaPass" type="password" class="form-control" placeholder="请输入密码">
                 </div>
                 <div class="form-group">
                     <label>性别</label><br/>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-group">
                     <label for="teaTele">电话</label>
-                    <input id="teaTele" name="teaTele" type="text" class="form-control" placeholder="请输入电话号码" value="123456789">
+                    <input id="teaTele" name="teaTele" type="text" class="form-control" placeholder="请输入电话号码">
                 </div>
                 <button type="submit" class="btn btn-primary">修改</button>
             </form>
@@ -77,12 +77,70 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.1/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <!-- Icons -->
 <script src="../js/feather.min.js"></script>
 <script>
     feather.replace();
+
+    // 从URL中获取参数
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // 获取teaId
+    const teaId = getQueryParam('teaId');
+
+    if (teaId) {
+        // 发送GET请求获取教师信息
+        axios.get(`/Teacher/${teaId}`)
+            .then(response => {
+                const teacher = response.data.data;
+                document.getElementById('teaId').value = teacher.teaId;
+                document.getElementById('teaName').value = teacher.teaName;
+                document.getElementById('teaPass').value = teacher.teaPass;
+                document.querySelector(`input[name="teaSex"][value="${teacher.teaSex}"]`).checked = true;
+                document.getElementById('teaTele').value = teacher.teaTele;
+            })
+            .catch(error => {
+                console.error('Error fetching teacher data:', error);
+            });
+    }
+
+    // 处理表单提交
+    document.getElementById('teacherForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // 阻止默认的表单提交行为
+
+        // 收集表单数据
+        const formData = new FormData(this);
+        const teacherData = {
+            teaId: formData.get('teaId'),
+            teaName: formData.get('teaName'),
+            teaPass: formData.get('teaPass'),
+            teaSex: formData.get('teaSex'),
+            teaTele: formData.get('teaTele')
+        };
+
+        // 发送PUT请求到新的URL
+        axios.put('/Teacher/update', teacherData)
+            .then(response => {
+                if (response.data.code === 1) {
+                    // 修改成功，跳转到teabyid.html页面
+                    window.location.href = `/adm/teabyid.html?teaId=${teacherData.teaId}`;
+                } else {
+                    // 修改失败，显示错误信息
+                    alert('修改失败，请重试');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating teacher data:', error);
+                alert('修改失败，请重试');
+            });
+    });
 </script>
+
 
 </body>
 </html>

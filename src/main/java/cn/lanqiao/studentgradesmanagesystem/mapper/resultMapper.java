@@ -1,13 +1,15 @@
 package cn.lanqiao.studentgradesmanagesystem.mapper;
 
-import cn.lanqiao.studentgradesmanagesystem.pojo.Result;
+
+import cn.lanqiao.studentgradesmanagesystem.model.pojo.Result;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Mapper
 public interface resultMapper {
     /**
      * 添加成绩
