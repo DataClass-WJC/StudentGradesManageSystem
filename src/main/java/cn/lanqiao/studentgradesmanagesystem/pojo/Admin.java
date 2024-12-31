@@ -13,7 +13,4 @@ public class Admin {
   private String adminName;
   private String adminPass;
 
-
-
-
 }
