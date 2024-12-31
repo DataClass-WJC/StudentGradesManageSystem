@@ -1,12 +1,15 @@
-package cn.lanqiao.studentgradesmanagesystem.service.Impl;
+package cn.lanqiao.studentgradesmanagesystem.service.impl;
+
 
 import cn.lanqiao.studentgradesmanagesystem.mapper.resultMapper;
+
 import cn.lanqiao.studentgradesmanagesystem.pojo.Result;
 import cn.lanqiao.studentgradesmanagesystem.service.resultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 public class resultServiceImpl implements resultService {
@@ -25,7 +28,7 @@ public class resultServiceImpl implements resultService {
     @Override
     public List<Result> getAllResult() {
         List<Result> allResult = resultMapper.getAllResult();
-        System.out.println(allResult);
+//        System.out.println(allResult);
         if (allResult != null) {
             return allResult;
         }else {
@@ -53,10 +56,21 @@ public class resultServiceImpl implements resultService {
             } else {
                 return 0;
             }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+    public List<Result> getResByStuId(String stuId) {
+        try {
+            List<Result> resByStuId = resultMapper.getResByStuId(stuId);
+            if (resByStuId != null) {
+                return resByStuId;
+            }else {
+                return null;
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
 
 }

@@ -1,4 +1,4 @@
-package cn.lanqiao.studentgradesmanagesystem.service.Impl;
+package cn.lanqiao.studentgradesmanagesystem.service.impl;
 
 import cn.lanqiao.studentgradesmanagesystem.mapper.teacherMapper;
 import cn.lanqiao.studentgradesmanagesystem.pojo.Teacher;

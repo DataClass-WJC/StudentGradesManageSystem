@@ -1,9 +1,7 @@
 package cn.lanqiao.studentgradesmanagesystem.mapper;
 
 import cn.lanqiao.studentgradesmanagesystem.pojo.Result;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +33,9 @@ public interface resultMapper {
 
     List<Result> getAllResult();
 
+    /**
+     * 根据学号查询成绩
+     */
 
+    List<Result> getResByStuId(@Param("stuId") String stuId);
 }
