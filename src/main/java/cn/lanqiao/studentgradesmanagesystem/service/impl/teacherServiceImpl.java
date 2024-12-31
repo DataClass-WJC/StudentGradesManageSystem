@@ -11,8 +11,6 @@ public class teacherServiceImpl implements teacherService {
     //依赖注入
     @Autowired
     private teacherMapper teacherMapper;
-
-
     @Override
     public Teacher login(Teacher teacher) {
         Teacher result = teacherMapper.login(teacher);

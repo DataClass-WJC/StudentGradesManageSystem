@@ -1,5 +1,6 @@
 package cn.lanqiao.studentgradesmanagesystem.service.impl;
 
+
 import cn.lanqiao.studentgradesmanagesystem.mapper.resultMapper;
 
 import cn.lanqiao.studentgradesmanagesystem.pojo.Result;
@@ -46,6 +47,19 @@ public class resultServiceImpl implements resultService {
     }
 
     @Override
+    public int deleteResult(int resId) {
+        try {
+            int result = resultMapper.deleteResult(resId);
+            if (result > 0) {
+                // 删除成功
+                return 1;
+            } else {
+                return 0;
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
     public List<Result> getResByStuId(String stuId) {
         try {
             List<Result> resByStuId = resultMapper.getResByStuId(stuId);
