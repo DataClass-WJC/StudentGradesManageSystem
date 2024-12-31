@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Result {
 
-  private long resId;
+  private int resId;
   private String stuId;
   private String subName;
-  private long resNum;
+  private int resNum;
   private String resTerm;
 
 }

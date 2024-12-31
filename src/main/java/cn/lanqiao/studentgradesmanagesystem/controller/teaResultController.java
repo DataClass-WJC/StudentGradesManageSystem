@@ -35,7 +35,7 @@ public class teaResultController {
     @RequestMapping("/updateResult")
     public ResponseUtils updateResult(@RequestBody Result result){
         try {
-            int updateResult = resultService.updateByResId(result);
+            int updateResult = resultService.updateResult(result);
 //            System.out.println(updateResult);
             if (updateResult > 0) {
                 return new ResponseUtils<>(200,"修改成功");
@@ -47,23 +47,23 @@ public class teaResultController {
         }
     }
     //删除成绩
-//    @RequestMapping("/deleteResult")
-//    public ResponseUtils deleteResult(@RequestBody Result result) {
-//        try {
-//            // 拿到参数之后我们就可以去执行sql删除了
-//            int deleteResult = resultService.deleteResult(result.getResId());
+    @RequestMapping("/deleteResult")
+    public ResponseUtils deleteResult(@RequestBody Result result) {
+        try {
+            // 拿到参数之后我们就可以去执行sql删除了
+            int deleteResult = resultService.deleteResult((int) result.getResId());
 //            System.out.println(deleteResult);
-//            if (deleteResult == 1){
-//                // 删除成功
-//                return new ResponseUtils(200, "删除成功");
-//            } else {
-//                return new ResponseUtils(500, "删除失败");
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new ResponseUtils(400, "删除异常");
-////        }
-////    }
+            if (deleteResult == 1){
+                // 删除成功
+                return new ResponseUtils(200, "删除成功");
+            } else {
+                return new ResponseUtils(500, "删除失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseUtils(400, "删除异常");
+        }
+    }
 
     //分页查询
 

@@ -37,14 +37,15 @@ public class resultServiceImpl implements resultService {
     }
 
     @Override
-    public int updateByResId(Result result) {
-        int result1 = resultMapper.updateByResId(result);
+    public int updateResult(Result result) {
+        int result1 = resultMapper.updateResult(result);
         if (result1 > 0) {
             return 1;
         } else {
             return 0;
         }
     }
+
 
     @Override
     public int deleteResult(int resId) {

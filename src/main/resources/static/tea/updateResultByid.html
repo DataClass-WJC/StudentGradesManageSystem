@@ -53,7 +53,7 @@
         <div th:replace="commons/teabar::#sidebar(activeUri='result')"></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <form id="updateForm">
+            <form>
                 <div class="form-group">
                     <label for="stuId">学号</label>
                     <input type="text" class="form-control" id="stuId" name="stuId" readonly>
@@ -70,7 +70,7 @@
                     <label for="resTerm">学期</label>
                     <input type="text" class="form-control" id="resTerm" name="resTerm">
                 </div>
-                <button type="submit" class="btn btn-primary">保存修改</button>
+                <button type="submit" class="btn btn-primary" id="updateForm">保存修改</button>
                 <a href="tearesultlist.html" class="btn btn-secondary">返回</a>
             </form>
         </main>
@@ -83,48 +83,42 @@
 <script type="text/javascript" src="../js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
 <script type="text/javascript" src="../js/popper.min.js" th:src="@{/webjars/popper.js/1.11.1/dist/popper.js}"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
+<script src="../js/axios.min.js"></script>
 <!-- Icons -->
 <script>
     // 页面加载完成后执行
-    document.addEventListener('DOMContentLoaded', function() {
-        // 获取URL中的参数
+    window.onload = function() {
+        // 获取URL参数
         const urlParams = new URLSearchParams(window.location.search);
-        const stuId = urlParams.get('stuId');
-        const subName = urlParams.get('subName');
-        const resNum = urlParams.get('resNum');
-        const resTerm = urlParams.get('resTerm');
 
-        // 将获取的参数填充到表单中
-        document.getElementById('stuId').value = stuId;
-        document.getElementById('subName').value = subName;
-        document.getElementById('resNum').value = resNum;
-        document.getElementById('resTerm').value = resTerm;
+        // 填充表单数据
+        document.getElementById('stuId').value = urlParams.get('stuId');
+        document.getElementById('subName').value = urlParams.get('subName');
+        document.getElementById('resNum').value = urlParams.get('resNum');
+        document.getElementById('resTerm').value = urlParams.get('resTerm');
 
-        // 处理表单提交
-        document.getElementById('updateForm').addEventListener('submit', function(e) {
+        // 保存按钮点击事件
+        document.querySelector('button[type="submit"]').onclick = function(e) {
             e.preventDefault();
 
             // 获取表单数据
             const formData = {
+                resId: urlParams.get('resId'),
                 stuId: document.getElementById('stuId').value,
                 subName: document.getElementById('subName').value,
                 resNum: document.getElementById('resNum').value,
                 resTerm: document.getElementById('resTerm').value
             };
-        //     axios函数
+            // 发送更新请求
             axios({
-                url: `http://localhost:8081/tea/updateResult/${resId}`,
-                method: "post",
-                data: {
-                    stuId: stuId,
-                    subName: subName,
-                    resNum: resNum,
-                    resTerm: resTerm
-                }
+                url: 'http://localhost:8081/tea/updateResult',
+                method: 'post',
+                data: formData
             }).then((response) => {
                 if (response.data.code === 200) {
                     alert('修改成功');
-                    getAllResults(); // 重新加载数据
+                    // 修改成功后跳转到列表页面
+                    window.location.href = 'tearesultlist.html';
                 } else {
                     alert('修改失败：' + response.data.message);
                 }
@@ -132,8 +126,8 @@
                 console.error('修改失败：', error);
                 alert('修改失败，请稍后再试');
             });
-        });
-    });
+        }
+    }
 </script>
 
 </body>
