@@ -3,8 +3,10 @@ package cn.lanqiao.studentgradesmanagesystem.service.impl;
 
 import cn.lanqiao.studentgradesmanagesystem.mapper.resultMapper;
 
-import cn.lanqiao.studentgradesmanagesystem.pojo.Result;
+import cn.lanqiao.studentgradesmanagesystem.model.pojo.Result;
 import cn.lanqiao.studentgradesmanagesystem.service.resultService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,5 +75,8 @@ public class resultServiceImpl implements resultService {
             throw new RuntimeException(e);
         }
     }
+
+
+
 
 }

@@ -1,6 +1,6 @@
 package cn.lanqiao.studentgradesmanagesystem.controller;
 
-import cn.lanqiao.studentgradesmanagesystem.pojo.Result;
+import cn.lanqiao.studentgradesmanagesystem.model.pojo.Result;
 import cn.lanqiao.studentgradesmanagesystem.service.resultService;
 
 import cn.lanqiao.studentgradesmanagesystem.utils.ResponseUtils;
@@ -51,7 +51,7 @@ public class teaResultController {
     public ResponseUtils deleteResult(@RequestBody Result result) {
         try {
             // 拿到参数之后我们就可以去执行sql删除了
-            int deleteResult = resultService.deleteResult((int) result.getResId());
+            int deleteResult = resultService.deleteResult(result.getResId());
 //            System.out.println(deleteResult);
             if (deleteResult == 1){
                 // 删除成功

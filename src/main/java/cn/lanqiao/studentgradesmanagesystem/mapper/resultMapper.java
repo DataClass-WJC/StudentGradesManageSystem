@@ -1,8 +1,7 @@
 package cn.lanqiao.studentgradesmanagesystem.mapper;
 
-import cn.lanqiao.studentgradesmanagesystem.pojo.Result;
+import cn.lanqiao.studentgradesmanagesystem.model.pojo.Result;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +23,13 @@ public interface resultMapper {
      * 删除成绩
      */
     int deleteResult(int resId);
+
+    /**
+     * 统计总记录数
+     */
+    Long selectTotal();
+
+
 
 
     /**

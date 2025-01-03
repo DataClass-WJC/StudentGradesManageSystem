@@ -1,4 +1,4 @@
-package cn.lanqiao.studentgradesmanagesystem.pojo;
+package cn.lanqiao.studentgradesmanagesystem.model.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

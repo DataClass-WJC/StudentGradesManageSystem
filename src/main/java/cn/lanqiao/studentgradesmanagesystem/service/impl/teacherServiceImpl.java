@@ -1,7 +1,7 @@
 package cn.lanqiao.studentgradesmanagesystem.service.impl;
 
 import cn.lanqiao.studentgradesmanagesystem.mapper.teacherMapper;
-import cn.lanqiao.studentgradesmanagesystem.pojo.Teacher;
+import cn.lanqiao.studentgradesmanagesystem.model.pojo.Teacher;
 import cn.lanqiao.studentgradesmanagesystem.service.teacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

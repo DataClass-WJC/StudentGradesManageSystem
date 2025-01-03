@@ -1,7 +1,7 @@
 package cn.lanqiao.studentgradesmanagesystem.mapper;
 
 
-import cn.lanqiao.studentgradesmanagesystem.pojo.Teacher;
+import cn.lanqiao.studentgradesmanagesystem.model.pojo.Teacher;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Service;
 

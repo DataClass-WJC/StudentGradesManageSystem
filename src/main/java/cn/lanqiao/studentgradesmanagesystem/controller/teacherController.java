@@ -1,7 +1,7 @@
 package cn.lanqiao.studentgradesmanagesystem.controller;
 
 
-import cn.lanqiao.studentgradesmanagesystem.pojo.Teacher;
+import cn.lanqiao.studentgradesmanagesystem.model.pojo.Teacher;
 import cn.lanqiao.studentgradesmanagesystem.service.teacherService;
 import cn.lanqiao.studentgradesmanagesystem.utils.ResponseUtils;
 import jakarta.servlet.http.HttpServletRequest;
