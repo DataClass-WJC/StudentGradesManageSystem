@@ -7,12 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Result {
-
-  private int resId;
-  private String stuId;
-  private String subName;
-  private int resNum;
-  private String resTerm;
-
+public class AdminVO {
+    private String adminId;
+    private String adminName;
+    private String adminPass;
 }

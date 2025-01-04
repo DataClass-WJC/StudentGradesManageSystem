@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lanqiao.studentgradesmanagesystem.mapper.TeacherloginMapper">
+    <resultMap id="TeacherMap" type="cn.lanqiao.studentgradesmanagesystem.model.pojo.Teacher">
+        <id property="teaId" column="tea_id"/>
+        <result property="teaName" column="tea_name"/>
+        <result property="teaPass" column="tea_pass"/>
+        <result property="teaSex" column="tea_sex"/>
+        <result property="teaTele" column="tea_tele"/>
+    </resultMap>
+
+    <select id="login" resultMap="TeacherMap">
+        select * from teacher
+        where tea_name = #{teaName}
+          and tea_pass = #{teaPass}
+    </select>
+</mapper>

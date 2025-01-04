@@ -1,9 +1,12 @@
 package cn.lanqiao.studentgradesmanagesystem.service.impl;
 
+
 import cn.lanqiao.studentgradesmanagesystem.mapper.resultMapper;
 
 import cn.lanqiao.studentgradesmanagesystem.model.pojo.Result;
 import cn.lanqiao.studentgradesmanagesystem.service.resultService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +38,8 @@ public class resultServiceImpl implements resultService {
     }
 
     @Override
-    public int updateByResId(Result result) {
-        int result1 = resultMapper.updateByResId(result);
+    public int updateResult(Result result) {
+        int result1 = resultMapper.updateResult(result);
         if (result1 > 0) {
             return 1;
         } else {
@@ -44,7 +47,21 @@ public class resultServiceImpl implements resultService {
         }
     }
 
+
     @Override
+    public int deleteResult(int resId) {
+        try {
+            int result = resultMapper.deleteResult(resId);
+            if (result > 0) {
+                // 删除成功
+                return 1;
+            } else {
+                return 0;
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
     public List<Result> getResByStuId(String stuId) {
         try {
             List<Result> resByStuId = resultMapper.getResByStuId(stuId);
@@ -57,5 +74,8 @@ public class resultServiceImpl implements resultService {
             throw new RuntimeException(e);
         }
     }
+
+
+
 
 }

@@ -16,6 +16,19 @@
         select null,#{result.stuId},#{result.subName},#{result.resNum},#{result.resTerm}
             where exists(select * from student where stu_id = #{result.stuId})
     </insert>
+    <!-- 修改 -->
+    <update id="updateResult">
+        UPDATE result
+        SET res_num = #{result.resNum},
+            res_term = #{result.resTerm},
+            sub_name = #{result.subName}
+        WHERE res_id = #{result.resId}
+          AND stu_id = #{result.stuId}
+    </update>
+    <!-- 删除成绩信息 -->
+    <delete id="deleteResult">
+        DELETE FROM result WHERE res_id = #{resId}
+    </delete>
     <!-- 查询所有成绩信息 -->
     <select id="getAllResult" resultMap="resultMap">
         select * FROM result
@@ -23,5 +36,9 @@
     <!-- 根据学号查询成绩信息 -->
     <select id="getResByStuId" resultMap="resultMap">
         select stu_id,sub_name,res_num,res_term from result where stu_id = #{stuId}
+    </select>
+
+    <select id="selectTotal" resultType="java.lang.Long">
+        select COUNT(*) FROM result
     </select>
 </mapper>

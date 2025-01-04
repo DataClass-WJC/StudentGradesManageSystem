@@ -32,8 +32,9 @@ public class teaResultController {
     @RequestMapping("/updateResult")
     public ResponseUtils updateResult(@RequestBody Result result){
         try {
-            int addResult = resultService.updateByResId(result);
-            if (addResult > 0) {
+            int updateResult = resultService.updateResult(result);
+//            System.out.println(updateResult);
+            if (updateResult > 0) {
                 return new ResponseUtils<>(200,"修改成功");
             }else {
                 return new ResponseUtils<>(500,"修改失败");
@@ -42,6 +43,27 @@ public class teaResultController {
             throw new RuntimeException(e);
         }
     }
+    //删除成绩
+    @RequestMapping("/deleteResult")
+    public ResponseUtils deleteResult(@RequestBody Result result) {
+        try {
+            // 拿到参数之后我们就可以去执行sql删除了
+            int deleteResult = resultService.deleteResult(result.getResId());
+//            System.out.println(deleteResult);
+            if (deleteResult == 1){
+                // 删除成功
+                return new ResponseUtils(200, "删除成功");
+            } else {
+                return new ResponseUtils(500, "删除失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseUtils(400, "删除异常");
+        }
+    }
+
+    //分页查询
+
 
     /**
      * 查询所有信息
