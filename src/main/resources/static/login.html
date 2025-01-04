@@ -1,81 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>学生信息管理系统登录</title>
 	<!-- Bootstrap core CSS -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
 	<!-- Custom styles for this template -->
-	<link href="css/signin.css" rel="stylesheet">
-
-	<!-- JavaScript files -->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.0/dist/umd/popper.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
-
+	<link href="css/signin.css" th:href="@{/css/signin.css}" rel="stylesheet">
+	<script type="text/javascript" src="js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+	<script type="text/javascript" src="js/popper.min.js" th:src="@{/webjars/popper.js/1.11.1/dist/popper.js}"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
 	<!-- Icons -->
-	<script src="https://unpkg.com/feather-icons"></script>
+	<script type="text/javascript" src="js/feather.min.js" th:src="@{/js/feather.min.js}"></script>
+	<!-- Axios -->
+	<script src="js/axios.min.js"></script>
+	<script src="js/axiosConfig.js"></script>
 </head>
-<body class="text-center" >
-<form id="loginForm" class="form-signin" method="post" >
-	<img class="mb-4" src="img/bootstrap-solid.svg" alt="" width="72" height="72">
+
+<body class="text-center">
+<form id="loginFrom" class="form-signin" onsubmit="return false;">
+	<img class="mb-4" th:src="@{img/bootstrap-solid.svg}" src="img/bootstrap-solid.svg" alt="" width="72" height="72">
 	<h1 class="h3 mb-3 font-weight-normal">请登录</h1>
 
-	<!-- 提示框，假设没有错误消息，这部分可以省略或提供一个默认消息 -->
-	<!-- 如果需要显示固定的提示信息，取消下面的注释并填写消息文本 -->
-	<!--
-    <div class="alert alert-danger" role="alert">
-        示例错误消息
-    </div>
-    -->
+	<!--提示框-->
+	<div class="alert alert-danger" role="alert" style="display: none;" id="errorMsg">
+		<div id="errorText"></div>
+	</div>
 
-	<label for="username" class="sr-only">用户名:</label>
-	<input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-	<label for="password" class="sr-only">密码:</label>
-	<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+	<label class="sr-only">用户名</label>
+	<input type="text" name="username" id="username" class="form-control" placeholder="Username" required="" autofocus="">
+	<label class="sr-only">密码</label>
+	<input type="password" name="password" id="password" class="form-control" placeholder="Password" required="">
 
-	<button class="btn btn-lg btn-success btn-block" onclick="send(0)" id="bt0">学生登录</button>
-	<button class="btn btn-lg btn-primary btn-block" onclick="send(1)" id="bt1">教师登录</button>
-	<button class="btn btn-lg btn-danger btn-block" onclick="send(2)" id="bt2">管理员登录</button>
+	<button type="button" class="btn btn-lg btn-success btn-block" id="bt0">学生登录</button>
+	<button type="button" class="btn btn-lg btn-primary btn-block" id="bt1">教师登录</button>
+	<button type="button" class="btn btn-lg btn-danger btn-block" id="bt2">管理员登录</button>
 	<p class="mt-5 mb-3 text-muted">© 学生成绩信息管理系统</p>
 </form>
-<script src="js/axios.min.js"></script>
-<script src="js/axiosConfig.js"></script>
+
 <script>
-	// let btn = document.querySelector(".btn");
-	// btn.onclick= function() {
-	// 	//获取用户名和密码
-	// 	let username = document.querySelector("#username").value;
-	// 	let password = document.querySelector("#password").value;
-	// 	axios({
-	// 		url: "",
-	// 		method: "post",
-	// 		data: {
-	// 			username: username,
-	// 			password: password
-	// 		}
-	// 	}).then((result) =>{
-	// 		console.log(result);
-	// 		if (result.data.code == 200){
-	// 			//跳转教师功能
-	// 			location.href ="/tea/tearesultlist.html";
-	// 		}else {
-	// 			alert("用户名或密码错误，请重新输入");
-	// 			location.href ="/login.html"
-	// 		}
-	// 	})
-	// }
-	function send(value){
-		if(value===0){
-			location.href="stu/stuindex.html"
-		}else if(value===1){
-			location.href="commons/teabar.html"
-		}else if (value===2){
-			location.href="admin/adminindex.html"
+	document.addEventListener('DOMContentLoaded', function() {
+		// 获取错误提示框
+		const errorMsg = document.getElementById('errorMsg');
+		const errorText = document.getElementById('errorText');
+
+		// 管理员登录按钮点击事件
+		document.getElementById('bt2').addEventListener('click', function() {
+			const username = document.getElementById('username').value;
+			const password = document.getElementById('password').value;
+
+			// 表单验证
+			if (!username || !password) {
+				showError("用户名和密码不能为空");
+				return;
+			}
+
+			// 发送登录请求
+			axios({
+				url: '/Admin/login',
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: {
+					adminName: username,
+					adminPass: password
+				}
+			})
+					.then(response => {
+						const result = response.data;
+						if (result.code === 200) {
+							// 登录成功
+							window.location.href = '/commons/admbar.html';
+						} else {
+							// 登录失败
+							showError(result.msg || "登录失败");
+							document.getElementById('password').value = '';
+						}
+					})
+					.catch(error => {
+						console.error('登录失败:', error);
+						showError("登录失败，请稍后重试");
+					});
+		});
+
+		// 学生登录按钮点击事件
+		document.getElementById('bt0').addEventListener('click', function() {
+			const username = document.getElementById('username').value;
+			const password = document.getElementById('password').value;
+
+			if (!username || !password) {
+				showError("用户名和密码不能为空");
+				return;
+			}
+		});
+
+		// 教师登录按钮点击事件
+		document.getElementById('bt1').addEventListener('click', function() {
+			const username = document.getElementById('username').value;
+			const password = document.getElementById('password').value;
+
+			if (!username || !password) {
+				showError("用户名和密码不能为空");
+				return;
+			}
+
+		});
+
+		// 显示错误信息的函数
+		function showError(message) {
+			errorText.textContent = message;
+			errorMsg.style.display = 'block';
+			setTimeout(() => {
+				errorMsg.style.display = 'none';
+			}, 3000);
 		}
-	}
+	});
+	document.addEventListener('DOMContentLoaded', function() {
+		const errorMsg = document.getElementById('errorMsg');
+		const errorText = document.getElementById('errorText');
+
+		// 学生登录按钮点击事件
+		document.getElementById('bt0').addEventListener('click', function() {
+			const username = document.getElementById('username').value;
+			const password = document.getElementById('password').value;
+
+			if (!username || !password) {
+				showError("用户名和密码不能为空");
+				return;
+			}
+
+			axios({
+				url: '/Student/login',
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: {
+					stuName: username,
+					stuPass: password
+				}
+			})
+					.then(response => {
+						const result = response.data;
+						if (result.code === 200) {
+							window.location.href = '/commons/stubar.html';
+						} else {
+							showError(result.msg || "登录失败");
+							document.getElementById('password').value = '';
+						}
+					})
+					.catch(error => {
+						console.error('登录失败:', error);
+						showError("登录失败，请稍后重试");
+					});
+		});
+
+		// 教师登录按钮点击事件
+		document.getElementById('bt1').addEventListener('click', function() {
+			const username = document.getElementById('username').value;
+			const password = document.getElementById('password').value;
+
+			if (!username || !password) {
+				showError("用户名和密码不能为空");
+				return;
+			}
+
+			axios({
+				url: '/Teacher/login',
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: {
+					teaName: username,
+					teaPass: password
+				}
+			})
+					.then(response => {
+						const result = response.data;
+						if (result.code === 200) {
+							window.location.href = '/commons/teabar.html';
+						} else {
+							showError(result.msg || "登录失败");
+							document.getElementById('password').value = '';
+						}
+					})
+					.catch(error => {
+						console.error('登录失败:', error);
+						showError("登录失败，请稍后重试");
+					});
+		});
+
+		// ... 管理员登录代码保持不变 ...
+
+		function showError(message) {
+			errorText.textContent = message;
+			errorMsg.style.display = 'block';
+			setTimeout(() => {
+				errorMsg.style.display = 'none';
+			}, 3000);
+		}
+	});
 </script>
 </body>
 </html>
-

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lanqiao.studentgradesmanagesystem.mapper.StudentMapper">
+    <resultMap id="StudentMap" type="cn.lanqiao.studentgradesmanagesystem.model.pojo.Student">
+        <id property="stuId" column="stu_id"/>
+        <result property="stuName" column="stu_name"/>
+        <result property="stuPass" column="stu_pass"/>
+        <result property="stuClass" column="stu_class"/>
+        <result property="stuSex" column="stu_sex"/>
+        <result property="stuTele" column="stu_tele"/>
+    </resultMap>
+
+    <select id="login" resultMap="StudentMap">
+        select * from student
+        where stu_name = #{stuName}
+          and stu_pass = #{stuPass}
+    </select>
+</mapper>
