@@ -10,6 +10,14 @@ import java.util.List;
 
 @Service
 public interface resultService {
+    /**
+     * 根据Id修改成绩
+     */
+    int updateResult(Result result);
+    /**
+     * 删除成绩
+     */
+    int deleteResult(int resId);
     int addResult(Result result);
     List<Result> getAllResult();
     int updateByResId(Result result);

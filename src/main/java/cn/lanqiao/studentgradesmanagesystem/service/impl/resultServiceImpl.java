@@ -17,6 +17,31 @@ public class resultServiceImpl implements resultService {
     @Autowired
     private resultMapper resultMapper;
     @Override
+    public int updateByResId(Result result) {
+        int result1 = resultMapper.updateResult(result);
+        if (result1 > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+
+    @Override
+    public int deleteResult(int resId) {
+        try {
+            int result = resultMapper.deleteResult(resId);
+            if (result > 0) {
+                // 删除成功
+                return 1;
+            } else {
+                return 0;
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+    @Override
     public int addResult(Result result) {
         int result1 = resultMapper.addResult(result);
         if (result1 > 0) {
@@ -49,19 +74,6 @@ public class resultServiceImpl implements resultService {
 
 
     @Override
-    public int deleteResult(int resId) {
-        try {
-            int result = resultMapper.deleteResult(resId);
-            if (result > 0) {
-                // 删除成功
-                return 1;
-            } else {
-                return 0;
-            }
-        }catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
     public List<Result> getResByStuId(String stuId) {
         try {
             List<Result> resByStuId = resultMapper.getResByStuId(stuId);
