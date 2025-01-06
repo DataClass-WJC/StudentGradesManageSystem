@@ -17,4 +17,34 @@ public class TeacherloginServiceImpl implements TeacherloginService  {
     public Teacher login(TeacherLoginDTO loginDTO) {
         return teacherMapper.login(loginDTO);
     }
+    @Override
+    public Teacher selectTea(Object teacher) {
+        try {
+
+            Teacher teacher1 = teacherMapper.selectTea(teacher);
+            System.out.println(teacher1);
+            if(teacher1==null){
+                return null;
+            }else {
+                return teacher1;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int selectTeas(Teacher teacher) {
+        try {
+
+            int updates = teacherMapper.selectTeas(teacher);
+            if(updates<0){
+                return 0;
+            }else {
+                return 1;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

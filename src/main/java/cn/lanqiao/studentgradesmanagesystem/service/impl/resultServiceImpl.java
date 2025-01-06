@@ -61,7 +61,6 @@ public class resultServiceImpl implements resultService {
             return null;
         }
     }
-
     @Override
     public int updateResult(Result result) {
         int result1 = resultMapper.updateResult(result);
@@ -71,7 +70,6 @@ public class resultServiceImpl implements resultService {
             return 0;
         }
     }
-
 
     @Override
     public List<Result> getResByStuId(String stuId) {
