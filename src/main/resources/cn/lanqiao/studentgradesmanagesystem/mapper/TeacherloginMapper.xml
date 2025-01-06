@@ -14,4 +14,7 @@
         where tea_name = #{teaName}
           and tea_pass = #{teaPass}
     </select>
+    <select id="selectTea" resultType="cn.lanqiao.studentgradesmanagesystem.model.pojo.Teacher" resultMap="TeacherMap">
+        select * from teacher where tea_id = #{teaId}
+    </select>
 </mapper>

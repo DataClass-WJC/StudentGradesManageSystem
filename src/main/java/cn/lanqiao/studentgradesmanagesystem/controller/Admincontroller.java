@@ -22,7 +22,6 @@ public class Admincontroller {
         try {
             // Call service layer for login
             Admin admin = adminService.loginAdm(adminLogin);
-
             if (admin == null) {
                 return new ResponseUtils<>(500, "登录失败");
             }

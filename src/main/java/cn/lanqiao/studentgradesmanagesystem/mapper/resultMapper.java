@@ -21,9 +21,6 @@ public interface resultMapper {
     /**
      * 根据Id修改成绩
      */
-    /**
-     * 根据Id修改成绩
-     */
     int updateResult(@Param("result") Result result);
     /**
      * 删除成绩

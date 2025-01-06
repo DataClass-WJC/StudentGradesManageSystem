@@ -6,4 +6,7 @@ import cn.lanqiao.studentgradesmanagesystem.model.pojo.Teacher;
 
 public interface TeacherloginService {
         Teacher login(TeacherLoginDTO loginDTO);
+        Teacher selectTea(Object teacher);
+
+        int selectTeas(Teacher teacher);
 }

@@ -41,8 +41,9 @@
                             首页
                         </a>
                     </li>
+                    <!-- 修改管理个人信息的链接，添加id -->
                     <li class="nav-item">
-                        <a class="nav-link active" href="/tea/toUpdateMsgPage">
+                        <a class="nav-link active" href="#" id="manageInfo">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
@@ -78,15 +79,15 @@
                 <div class="card-body">
                     <form th:action="@{/tea/updatePersonalInfo}" method="post">
                         <div class="form-group row">
-                            <label for="name" class="col-sm-2 col-form-label">工号</label>
+                            <label for="name1" class="col-sm-2 col-form-label">工号</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="name" name="name" th:value="${teacher.name}" required>
+                                <input type="text" class="form-control" id="name1" name="name" th:value="${teacher.name}" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="name" class="col-sm-2 col-form-label">姓名</label>
+                            <label for="name2" class="col-sm-2 col-form-label">姓名</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="name" name="name" th:value="${teacher.name}" required>
+                                <input type="text" class="form-control" id="name2" name="name" th:value="${teacher.name}" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -114,3 +115,82 @@
 </div>
 </body>
 </html>
+<script src="../js/axios.min.js"></script>
+<script src="../js/axiosConfig.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 页面加载时立即发送请求获取教师信息
+        loadTeacherInfo();
+
+        // 处理表单提交
+        document.querySelector('form').addEventListener('submit', handleFormSubmit);
+    });
+
+    // 获取教师信息的函数
+    function loadTeacherInfo() {
+        axios({
+            url: "http://localhost:8081/tea/selectTea",
+            method: "get",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((result) => {
+            console.log('API响应：', result);
+            console.log('返回的数据：', result.data);
+
+            if (result.data.code === 200) {
+                const teacherData = result.data.data;
+                console.log('教师数据：', teacherData);
+
+                // 填充表单数据
+                document.getElementById('name1').value = teacherData.teaId || '';
+                document.getElementById('name2').value = teacherData.teaName || '';
+                document.getElementById('password').value = teacherData.teaPass || '';
+                document.getElementById('phone').value = teacherData.teaTele || '';
+
+                // 禁用工号输入框
+                document.getElementById('name1').disabled = true;
+
+            } else {
+                console.error('获取数据失败：', result.data);
+                alert("获取教师信息失败");
+            }
+        }).catch(error => {
+            console.error('请求错误：', error);
+            alert("获取教师信息失败");
+        });
+    }
+
+    // 处理表单提交的函数
+    function handleFormSubmit(e) {
+        e.preventDefault();
+
+        const formData = {
+            teaId: document.getElementById('name1').value,
+            teaName: document.getElementById('name2').value,
+            teaPass: document.getElementById('password').value,
+            teaTele: document.getElementById('phone').value
+        };
+
+        console.log('提交的数据：', formData);
+
+        axios({
+            url: "http://localhost:8081/tea/updateTeas",
+            method: "put",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: formData
+        }).then(response => {
+            console.log('更新响应：', response);
+            if (response.data.code === 200) {
+                alert("修改成功");
+            } else {
+                alert("修改失败");
+            }
+        }).catch(error => {
+            console.error('更新错误：', error);
+            alert("修改失败");
+        });
+    }
+</script>

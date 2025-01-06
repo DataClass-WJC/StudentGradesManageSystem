@@ -1,8 +1,12 @@
 package cn.lanqiao.studentgradesmanagesystem.controller;
 
 import cn.lanqiao.studentgradesmanagesystem.model.pojo.Result;
+import cn.lanqiao.studentgradesmanagesystem.model.pojo.Teacher;
+import cn.lanqiao.studentgradesmanagesystem.service.TeacherloginService;
 import cn.lanqiao.studentgradesmanagesystem.service.resultService;
 import cn.lanqiao.studentgradesmanagesystem.utils.ResponseUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +17,8 @@ import java.util.List;
 public class teaResultController {
     @Autowired
     private resultService resultService;
+    @Autowired
+    private TeacherloginService teacherloginService;
     //添加成绩
     @RequestMapping("/addResult")
     public ResponseUtils addResult(@RequestBody Result result){
@@ -32,7 +38,7 @@ public class teaResultController {
     @RequestMapping("/updateResult")
     public ResponseUtils updateResult(@RequestBody Result result){
         try {
-            int updateResult = resultService.updateResult(result);
+            int updateResult = resultService.updateByResId(result);
 //            System.out.println(updateResult);
             if (updateResult > 0) {
                 return new ResponseUtils<>(200,"修改成功");
@@ -102,6 +108,41 @@ public class teaResultController {
             e.printStackTrace();
 //            return new ResponseUtils(400,"查询异常");
             throw new RuntimeException();
+        }
+    }
+
+    //    渲染
+    @RequestMapping("/selectTea")
+    public ResponseUtils selectTea(HttpServletRequest request){
+        try {
+            HttpSession session = request.getSession();
+            Object teacherLogin = session.getAttribute("teacherLogin");
+            Teacher teacher = teacherloginService.selectTea(teacherLogin);
+            if(teacher==null){
+                return new ResponseUtils<>(500, "登录失败");
+            }else {
+
+                return new ResponseUtils<>(200, "登录成功", teacher);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @RequestMapping("/updateTeas")
+    public ResponseUtils updateTea(@RequestBody Teacher teacher){
+        try {
+            System.out.println(111);
+            System.out.println(teacher);
+            int teacher1 = teacherloginService.selectTeas(teacher);
+            System.out.println(teacher1);
+            if(teacher1==0){
+                return new ResponseUtils<>(500, "修改失败");
+            }else {
+                return new ResponseUtils<>(200, "修改成功");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
