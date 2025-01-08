@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lanqiao.studentgradesmanagesystem.mapper.ClassMapper">
+    <resultMap id="classtMap" type="cn.lanqiao.studentgradesmanagesystem.model.pojo.Class">
+        <id column="class_id" property="classId"/>
+        <result column="class_name" property="className"/>
+    </resultMap>
+
+    <!-- 查询所有班级 -->
+    <select id="getAllClasses" resultMap="classtMap">
+        SELECT class_id, class_name
+        FROM class
+        ORDER BY class_id
+    </select>
+
+    <!-- 根据班级名称模糊查询 -->
+    <select id="getClassByName" resultMap="classtMap">
+        SELECT class_id, class_name
+        FROM class
+        WHERE class_name LIKE CONCAT('%', #{className}, '%')
+        ORDER BY class_id
+    </select>
+    <select id="getClassById" resultMap="classtMap">
+        SELECT class_id, class_name
+        FROM class
+        WHERE class_id = #{classId}
+    </select>
+    <!-- 添加班级 -->
+    <insert id="addClass" parameterType="cn.lanqiao.studentgradesmanagesystem.model.pojo.Class">
+        INSERT INTO class (class_id, class_name)
+        VALUES (#{classId}, #{className})
+    </insert>
+    <delete id="deleteClass" parameterType="cn.lanqiao.studentgradesmanagesystem.model.pojo.Class">
+        DELETE FROM class
+        WHERE class_id = #{classId}
+    </delete>
+</mapper>
