@@ -1,12 +1,12 @@
-package cn.lanqiao.studentgradesmanagesystem.service;
+        package cn.lanqiao.studentgradesmanagesystem.service;
 
 
-import cn.lanqiao.studentgradesmanagesystem.model.dto.TeacherLoginDTO;
-import cn.lanqiao.studentgradesmanagesystem.model.pojo.Teacher;
+        import cn.lanqiao.studentgradesmanagesystem.model.dto.TeacherLoginDTO;
+        import cn.lanqiao.studentgradesmanagesystem.model.pojo.Teacher;
 
-public interface TeacherloginService {
-        Teacher login(TeacherLoginDTO loginDTO);
-        Teacher selectTea(Object teacher);
+        public interface TeacherloginService {
+                Teacher login(TeacherLoginDTO loginDTO);
+                Teacher selectTea(Object teacher);
 
-        int selectTeas(Teacher teacher);
-}
+                int selectTeas(Teacher teacher);
+        }

@@ -145,7 +145,7 @@
 					.then(response => {
 						const result = response.data;
 						if (result.code === 200) {
-							window.location.href = '/commons/stubar.html';
+							window.location.href = '/stu/stuindex.html';
 						} else {
 							showError(result.msg || "登录失败");
 							document.getElementById('password').value = '';
