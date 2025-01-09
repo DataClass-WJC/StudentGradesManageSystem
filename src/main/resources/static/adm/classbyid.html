@@ -224,7 +224,6 @@
             <td>${classItem.classId || ''}</td>
             <td>${classItem.className || ''}</td>
             <td>
-                <button class="btn btn-primary" onclick="editClass('${classItem.classId}')">编辑</button>
                 <button class="btn btn-danger" onclick="deleteClass('${classItem.classId}')">删除</button>
             </td>
         `;
@@ -264,11 +263,6 @@
             });
     }
 
-    // 编辑班级
-    function editClass(classId) {
-        console.log('编辑班级:', classId);
-        window.location.href = "/adm/upadteclass.html";
-    }
 
     // 删除班级
     function deleteClass(classId) {

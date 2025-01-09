@@ -55,12 +55,8 @@
                 </div>
                 <input type="hidden" name="_method" value="put" />
                 <div class="form-group">
-                    <label>班级号</label>
-                    <input name="classId" type="text" class="form-control" placeholder="请输入班级号" value="1001">
-                </div>
-                <div class="form-group">
                     <label>班级名</label>
-                    <input name="className" type="text" class="form-control" placeholder="请输入班级名" value="高三一班">
+                    <input name="className" type="text" class="form-control" placeholder="请输入班级名">
                 </div>
                 <button type="submit" class="btn btn-primary">修改</button>
             </form>
@@ -84,26 +80,37 @@
         const classId = urlParams.get('classId');
 
         if (classId) {
-            // 设置班级 ID 到输入框
-            document.querySelector('input[name="classId"]').value = classId;
-            document.querySelector('input[name="classId"]').readOnly = true; // 班级ID不允许修改
+            // 获取班级信息
+            axios.get(`/Class/getClassById?classId=${classId}`)
+                .then(response => {
+                    if (response.data.code === 200) {
+                        // 设置表单值，但不设置只读
+                        document.querySelector('input[name="classId"]').value = classId;
+                        document.querySelector('input[name="className"]').value = response.data.data.className;
+                    }
+                })
+                .catch(error => {
+                    console.error('获取班级信息失败:', error);
+                });
         }
     });
 
     // 处理表单提交
     document.querySelector('form').addEventListener('submit', function(e) {
-        e.preventDefault();
+        e.preventDefault(); // 阻止表单默认提交
 
         const classId = document.querySelector('input[name="classId"]').value;
         const className = document.querySelector('input[name="className"]').value;
+        const alertDiv = document.querySelector('.alert-danger');
 
+        // 表单验证
         if (!classId || !className) {
-            const alertDiv = document.querySelector('.alert-danger');
             alertDiv.textContent = '班级号和班级名不能为空！';
             alertDiv.style.display = 'block';
             return;
         }
 
+        // 发送更新请求
         axios({
             url: '/Class/updateClass',
             method: 'put',
@@ -112,7 +119,8 @@
                 className: className
             }
         }).then(result => {
-            const alertDiv = document.querySelector('.alert-danger');
+            console.log('请求结果:', result);
+
             if (result.data.code === 200) {
                 // 修改成功
                 alertDiv.className = 'alert alert-success';
@@ -136,7 +144,6 @@
             }
         }).catch(error => {
             console.error('修改失败:', error);
-            const alertDiv = document.querySelector('.alert-danger');
             alertDiv.textContent = '系统错误，请稍后重试';
             alertDiv.style.display = 'block';
 
