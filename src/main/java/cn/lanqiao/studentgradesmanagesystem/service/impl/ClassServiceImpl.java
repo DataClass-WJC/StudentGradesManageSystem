@@ -36,5 +36,8 @@ public class ClassServiceImpl implements ClassService {
     public int deleteClass(String classId) {
         return classMapper.deleteClass(classId);
     }
-
+    @Override
+    public int updateClass(Class classList) {
+        return classMapper.updateClass(classList);
+    }
 }

@@ -94,4 +94,31 @@ public class ClassController {
             return new ResponseUtils(304, "删除异常");
         }
     }
+    @PutMapping("/updateClass")
+    public ResponseUtils updateClass(@RequestBody Class classList) {
+        try {
+            // 验证输入
+            if (classList.getClassId() == null || classList.getClassName() == null ||
+                    classList.getClassId().trim().isEmpty() || classList.getClassName().trim().isEmpty()) {
+                return new ResponseUtils(304, "班级信息不能为空");
+            }
+
+            // 检查班级是否存在
+            Class existingClass = classService.getClassById(classList.getClassId());
+            if (existingClass == null) {
+                return new ResponseUtils(304, "班级不存在");
+            }
+
+            // 更新班级
+            int result = classService.updateClass(classList);
+            if (result > 0) {
+                return new ResponseUtils(200, "更新成功");
+            } else {
+                return new ResponseUtils(304, "更新失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseUtils(304, "更新异常");
+        }
+    }
 }

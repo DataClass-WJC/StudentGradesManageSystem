@@ -11,4 +11,5 @@ public interface ClassMapper {
     Class getClassById(String classId);
     int addClass(Class classlist);
     int deleteClass(String classId);
+    int updateClass(Class classList);
 }

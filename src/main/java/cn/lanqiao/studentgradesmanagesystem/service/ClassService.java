@@ -9,4 +9,5 @@ public interface ClassService {
     Class getClassById(String classId);
     int addClass(Class classList);
     int deleteClass(String classId);
+    int updateClass(Class classList);
 }
