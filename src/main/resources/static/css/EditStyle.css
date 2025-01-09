@@ -1,0 +1,90 @@
+
+*{margin:0;padding:0;font-size:16px;font-family:微软雅黑;}
+table{border-collapse:collapse;}
+td{padding:2px 3px;}
+input[type=text],input[type=password],input[type=date],input[type=number]{ width:210px; height: 24px;}
+input[type=button],input[type=reset],input[type=submit]{ width:75px; height: 24px; line-height: 22px; margin-top:10px;}
+select{ width:214px; height: 26px;}
+
+input[readonly]{ background: #EBEBE4; border:1px solid #A9A9A9; }
+/* 基本样式 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+table {
+    width: 50%;
+    margin: 50px auto;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+td {
+    padding: 10px;
+    text-align: right;
+    vertical-align: middle;
+}
+
+td input {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+td input[readonly] {
+    background-color: #f9f9f9;
+}
+
+td input[type="text"]:focus {
+    border-color: #5e9ed6;
+    outline: none;
+}
+
+/* 按钮样式 */
+input[type="submit"],
+input[type="button"] {
+    width: 100px;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    background-color: #45a049;
+}
+
+/* 错误提示 */
+input[type="text"]:invalid {
+    border-color: red;
+}
+
+input[type="text"]:valid {
+    border-color: green;
+}
+
+tfoot {
+    text-align: center;
+}
+
+tfoot td {
+    padding: 15px;
+}
+
+tfoot input[type="submit"],
+tfoot input[type="button"] {
+    width: auto;
+}
+

@@ -9,10 +9,10 @@
 
     <title>学生成绩信息管理系统</title>
     <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
     <style type="text/css">
         /* Chart.js */
         @-webkit-keyframes chartjs-render-animation {
@@ -41,7 +41,7 @@
 </head>
 
 <body>
-<!-- 假设topbar和sidebar是静态的，并且已经包含在页面中 -->
+
 <div class="container-fluid">
     <div class="row">
         <!-- 侧边栏简化为静态版本 -->
@@ -49,71 +49,49 @@
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="/stu/toindex">首页</a>
+                        <a class="nav-link" href="/stu/stuindex.html">首页</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/stu/toUpdateMsgPage">管理个人信息</a>
+                        <a class="nav-link active" href="../adm/updatestu.html">管理个人信息</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/stu/toresdmin/1">查询成绩</a>
+                        <a class="nav-link active" href="">查询成绩</a>
                     </li>
                 </ul>
             </div>
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <form method="get" action="/stu/selectResByTerm/1">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="resTerm" placeholder="请输入学期例：（18-2020-1）" aria-label="请输入学期例：（2020-1）" aria-describedby="button-addon2">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">按学期查询</button>
-                    </div>
-                </div>
-            </form>
-
             <div class="table-responsive">
                 <table class="table table-striped table-sm">
                     <thead>
                     <tr>
                         <th>课程名</th>
                         <th>成绩</th>
-                        <th>学期</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <!-- 假定有以下数据 -->
-                    <tr>
-                        <td>数学分析</td>
-                        <td>88</td>
-                        <td>18-2020-1</td>
-                    </tr>
-                    <tr>
-                        <td>线性代数</td>
-                        <td>92</td>
-                        <td>18-2020-1</td>
-                    </tr>
+                    <tbody id="TableBody">
+                    <!-- 用户数据将会在这里动态加载 -->
                     </tbody>
                 </table>
             </div>
-
             <!-- 分页信息 -->
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="/stu/selectResByTerm/1?resTerm=18-2020-1">首页</a></li>
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
+                    <li class="page-item"><a class="page-link" onclick="changePage(1)" href="javascript:void(0)">首页</a></li>
+                    <li class="page-item">
+                        <a class="page-link" onclick="changePage(currentPage-1)" href="javascript:void(0)" tabindex="-1" aria-disabled="true">上一页</a>
                     </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1 <span class="sr-only">(current)</span></a>
+                    <!--                    <li class="page-item">-->
+                    <!--                         <a class="page-link" id="totalPages"></a>页-->
+                    <!--                    </li>-->
+                    <!--                 <span class="right-text09" id="totalPages">0</span> 页 | 第 <span class="right-text09"-->
+                    <!--                                                                                                         id="currentPage">1</span> -->
+                    <li class="page-item">
+                        <a class="page-link" onclick="changePage(currentPage+1)" href="javascript:void(0)">下一页</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="/stu/selectResByTerm/2?resTerm=18-2020-1">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="/stu/selectResByTerm/2?resTerm=18-2020-1">下一页</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="/stu/selectResByTerm/5?resTerm=18-2020-1">末页</a>
+                        <a class="page-link" onclick="changePage(totalPages)" href="javascript:void(0)">末页</a>
                     </li>
                 </ul>
             </nav>
@@ -121,15 +99,117 @@
     </div>
 </div>
 
-<!-- Bootstrap core JavaScript -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
-
-<!-- Icons -->
-<script src="js/feather.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    feather.replace()
+    window.addEventListener('DOMContentLoaded', (event) => {
+        // 检查 sessionStorage 中是否有标识符
+        if (!sessionStorage.getItem('hasReloaded')) {
+            // 如果没有标识符，设置标识符并刷新页面
+            sessionStorage.setItem('hasReloaded', 'true');
+            location.reload();  // 刷新页面
+        }
+    });
+
+    // 定义分页相关变量
+    let currentPage = 1; // 当前页
+    let totalPages = parseInt(getCookieValue("total")) || 1; // 总页数
+    const pageSize = 4; // 每页显示的记录数
+
+    function getCookieValue(name) {
+        // 创建一个正则表达式对象，用于匹配cookie名称和值
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        // 如果找到了匹配项，则返回解码后的cookie值，否则返回null或你指定的默认值
+        return match ? decodeURIComponent(match[2]) : null;
+    }
+
+    // 页面加载完成后尝试自动加载最新学期的成绩信息
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchDataAndRender();
+    });
+
+    function changePage(page) {
+        if (page < 1 || page > totalPages) {
+            alert('页码超出范围！');
+            return;
+        }
+
+        // 更新当前页数
+        currentPage = page;
+
+        // 调用获取数据并渲染的方法
+        fetchDataAndRender();
+    }
+
+    // 获取数据并渲染
+    function fetchDataAndRender() {
+        axios({
+            url: "http://localhost:8081/Admin/list",
+            method: 'post',
+            data: {
+                pageNum: currentPage,
+                pageSize: pageSize,
+            }
+        }).then((response) => {
+            const data = response.data;
+
+            // 检查响应状态
+            if (data.code === 200) {
+                // 假设返回的数据中包含成绩列表
+                const results = Array.isArray(data.data) ? data.data : [];
+                // console.log()
+                // console.log(results);
+                renderResults(results);
+                // alert("查询成功");
+                // 更新分页信息
+                // 注意：如果你的后端没有返回总页数，请根据实际情况调整此部分代码
+                // 这里假设后端返回了一个名为 `totalPages` 的属性表示总页数
+                totalPages = data.total || totalPages; // 确保后端确实返回了totalPages
+                // alert(totalPages)
+                updatePaginationUI(); // 更新分页UI元素
+            } else {
+                console.error("Unexpected response code:", data.code);
+                alert("查询失败");
+            }
+        }).catch(function (error) {
+            console.error('There was an error!', error);
+            if (error.response) {
+                console.error('Server responded with:', error.response.status, error.response.statusText);
+            } else {
+                console.error('Error details:', error.message);
+            }
+        });
+    }
+
+    // 动态创建成绩表格行
+    function renderResults(data) {
+        let rows = '';
+        data.forEach(item => {
+            console.log("Rendering item:", item); // 打印每一项数据
+            rows += `<tr><td>${item.sub_name || 'N/A'}</td><td>${item.res_num !== undefined ? item.res_num : 'N/A'}</td></tr>`;
+        });
+
+        // 将新行插入到表格主体中
+        const tableBody = document.getElementById('TableBody');
+        if (tableBody) {
+            tableBody.innerHTML = rows;
+        } else {
+            console.error("Table body not found!");
+        }
+    }
+
+    // 更新分页UI元素
+    function updatePaginationUI() {
+        document.querySelectorAll('.pagination .page-item a').forEach(link => link.removeAttribute('disabled'));
+
+        if (currentPage === 1) {
+            document.querySelector('.pagination .page-item a[onclick*="currentPage-1"]').setAttribute('disabled', 'disabled');
+        }
+
+        if (currentPage === totalPages) {
+            document.querySelector('.pagination .page-item a[onclick*="currentPage+1"]').setAttribute('disabled', 'disabled');
+        }
+    }
 </script>
+
 </body>
 </html>

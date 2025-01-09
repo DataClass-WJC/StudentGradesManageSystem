@@ -9,8 +9,8 @@
 
     <title>学生修改</title>
     <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="../js/axios.min.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom styles for this template -->
     <link href="../css/dashboard.css" rel="stylesheet">
     <style type="text/css">
@@ -45,45 +45,38 @@
 
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            学生管理 <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <!-- 更多导航项... -->
-                </ul>
-            </div>
-        </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <form id="studentForm">
+            <form action="/adm/stu" method="post">
                 <!-- 错误信息部分，假设没有错误，这部分可以省略 -->
                 <input type="hidden" name="_method" value="put" />
 
                 <div class="form-group">
+                    <label for="stuId">学号</label>
+                    <input id="stuId" name="stuId" type="text" class="form-control" placeholder="请输入学号" >
+                </div>
+                <div class="form-group">
                     <label for="stuName">姓名</label>
-                    <input id="stuName" name="stuName" type="text" class="form-control" placeholder="请输入姓名" value="李华">
+                    <input id="stuName" name="stuName" type="text" class="form-control" placeholder="请输入姓名" >
                 </div>
                 <div class="form-group">
                     <label for="stuPass">密码</label>
-                    <input id="stuPass" name="stuPass" type="password" class="form-control" placeholder="请输入密码" value="password">
+                    <input id="stuPass" name="stuPass" type="password" class="form-control" placeholder="请输入密码" >
                 </div>
+                <!-- 修改班级输入框 -->
                 <div class="form-group">
                     <label for="stuClass">班级</label>
-                    <input id="stuClass" name="stuClass" type="text" class="form-control" placeholder="请输入班级" value="高三一班">
+                    <input id="stuClass" name="stuClass" type="text" class="form-control" placeholder="请输入班级">
                 </div>
-
+                <!-- 修改性别单选框的值 -->
                 <div class="form-group">
                     <label>性别</label><br/>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="stuSex" id="male" value="1" checked>
+                        <input class="form-check-input" type="radio" name="stuSex" id="male" value="0">
                         <label class="form-check-label" for="male">男</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="stuSex" id="female" value="0">
+                        <input class="form-check-input" type="radio" name="stuSex" id="female" value="1">
                         <label class="form-check-label" for="female">女</label>
                     </div>
                 </div>
@@ -91,78 +84,94 @@
                     <label for="stuTele">电话</label>
                     <input id="stuTele" name="stuTele" type="text" class="form-control" placeholder="请输入电话号码" value="123456789">
                 </div>
-                <button type="button" class="btn btn-primary" onclick="updateStudent()">修改</button>
-            </form>
+                <button type="submit" class="btn btn-primary">修改</button>
+                <button type="button" class="btn btn-primary exit" onclick="exitToStubar()">退出</button>            </form>
         </main>
     </div>
 </div>
 
-<!-- Bootstrap core JavaScript -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.1/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
 
 <!-- Icons -->
 <script src="../js/feather.min.js"></script>
 <script>
     feather.replace();
 </script>
-<script>
-    // 解析URL参数
-    function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    }
-
-    // 获取stuId参数
-    var stuId = getUrlParameter('stuId');
-
-    // 使用DOMContentLoaded事件确保脚本在DOM加载完成后执行
-    document.addEventListener('DOMContentLoaded', function() {
-        if (stuId) {
-            axios.get('/students/' + stuId)
-                .then(function (response) {
-                    // 填充表单
-                    document.getElementById('stuName').value = response.data.data.stuName;
-                    document.getElementById('stuPass').value = response.data.data.stuPass;
-                    document.getElementById('stuClass').value = response.data.data.stuClass;
-                    document.getElementById(response.data.data.stuSex === '1' ? 'male' : 'female').checked = true;
-                    document.getElementById('stuTele').value = response.data.data.stuTele;
-                })
-                .catch(function (error) {
-                    console.error('Error fetching student data:', error);
-                });
-        }
-    });
-
-    // 处理修改逻辑
-    function updateStudent() {
-        var formData = new FormData(document.getElementById('studentForm'));
-        var studentData = {
-            stuId: stuId,
-            stuName: formData.get('stuName'),
-            stuPass: formData.get('stuPass'),
-            stuClass: formData.get('stuClass'),
-            stuSex: formData.get('stuSex'),
-            stuTele: formData.get('stuTele')
-        };
-
-        axios.put('/students/update', studentData)
-            .then(function (response) {
-                if (response.data.code === 1) {
-                    alert('修改成功');
-                    window.location.href = '/adm/stulist.html';
-                } else {
-                    alert('修改失败');
-                }
-            })
-            .catch(function (error) {
-                console.error('Error updating student data:', error);
-                alert('修改失败');
-            });
-    }
-</script>
+<script src="../js/axios.min.js"></script>
+<script src="../js/axiosConfig.js"></script>
 </body>
 </html>
+<!-- ... existing HTML ... -->
+
+<!-- ... existing HTML ... -->
+
+<script>
+    window.onload = function() {
+        axios({
+            url: "http://localhost:8081/system/update",
+            method: "get",
+        }).then((result) => {
+            console.log('返回的数据：', result.data.data); // 调试用
+
+            // 使用 result.data.data 来获取用户数据
+            const userData = result.data.data;
+
+            if (userData) {
+                // 填充表单数据
+                document.getElementById('stuId').value = userData.stuId;
+                document.getElementById('stuName').value = userData.stuName;
+                document.getElementById('stuPass').value = userData.stuPass;
+                document.getElementById('stuClass').value = userData.stuClass;
+                document.getElementById('stuTele').value = userData.stuTele;
+
+                // 修改性别判断逻辑
+                if (userData.stuSex === 0) {
+                    document.getElementById('male').checked = true;
+                } else if (userData.stuSex === 1) {
+                    document.getElementById('female').checked = true;
+                }
+
+                // 禁用学号输入框
+                document.getElementById('stuId').disabled = true;
+
+            } else {
+                alert("未获取到用户数据");
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            alert("获取用户信息失败");
+        });
+    }
+
+    // 修改提交处理也需要相应调整
+    document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = {
+            stuId: document.getElementById('stuId').value,
+            stuName: document.getElementById('stuName').value,
+            stuPass: document.getElementById('stuPass').value,
+            stuClass: document.getElementById('stuClass').value,
+            stuSex: document.querySelector('input[name="stuSex"]:checked').value,
+            stuTele: document.getElementById('stuTele').value
+        };
+
+        axios({
+            url: "http://localhost:8081/system/updates",
+            method: "put",
+            data: formData
+        }).then(response => {
+            if (response.data.code === 200) {
+                alert("修改成功");
+            } else {
+                alert("修改失败");
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            alert("修改失败");
+        });
+    });
+    function exitToStubar() {
+        // 使用相对路径导航到stubar.html
+        window.location.href = '../stu/stuindex.html';
+    }
+</script>
